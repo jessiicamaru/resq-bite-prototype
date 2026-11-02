@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:final_project/main.dart';
-import 'package:final_project/features/merchant/navigation/merchant_main_nav_screen.dart';
-import 'package:final_project/features/consumer/navigation/consumer_main_nav_screen.dart';
 
 void main() {
   testWidgets('ResQBitesApp smoke test - Initial Splash Screen', (WidgetTester tester) async {
