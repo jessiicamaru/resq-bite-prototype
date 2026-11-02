@@ -1,4 +1,5 @@
 import '../models/food_bag.dart';
+import '../models/merchant_order.dart';
 
 const List<MysteryBag> mockMysteryBags = [
   MysteryBag(
@@ -106,3 +107,45 @@ const mockUserImpact = GreenImpact(
   ambassadorRank: 'Đại sứ Tiêu dùng Xanh (Hạng Bạc)',
 );
 
+final List<MerchantOrder> mockMerchantOrders = [
+  MerchantOrder(
+    orderCode: 'RESQ-8942-DN',
+    customerName: 'Thanh Hậu',
+    bagTitle: 'Túi Bánh Cuối Ngày',
+    quantity: 1,
+    totalPrice: 35000,
+    pickupTime: '20:00 – 21:30',
+    status: 'pending',
+    orderTime: DateTime.now().subtract(const Duration(minutes: 15)),
+  ),
+  MerchantOrder(
+    orderCode: 'RESQ-7721-DN',
+    customerName: 'Minh Anh',
+    bagTitle: 'Túi Bánh Cuối Ngày',
+    quantity: 2,
+    totalPrice: 70000,
+    pickupTime: '20:00 – 21:30',
+    status: 'pending',
+    orderTime: DateTime.now().subtract(const Duration(minutes: 25)),
+  ),
+  MerchantOrder(
+    orderCode: 'RESQ-6310-DN',
+    customerName: 'Hoàng Long',
+    bagTitle: 'Túi Bánh Cuối Ngày',
+    quantity: 1,
+    totalPrice: 35000,
+    pickupTime: '19:45 (Đã nhận)',
+    status: 'completed',
+    orderTime: DateTime.now().subtract(const Duration(hours: 1)),
+  ),
+  MerchantOrder(
+    orderCode: 'RESQ-5198-DN',
+    customerName: 'Bích Trâm',
+    bagTitle: 'Túi Bánh Cuối Ngày',
+    quantity: 1,
+    totalPrice: 35000,
+    pickupTime: '19:30 (Đã nhận)',
+    status: 'completed',
+    orderTime: DateTime.now().subtract(const Duration(hours: 2)),
+  ),
+];

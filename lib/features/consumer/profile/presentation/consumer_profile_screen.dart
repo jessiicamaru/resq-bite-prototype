@@ -133,15 +133,82 @@ class ConsumerProfileScreen extends StatelessWidget {
               subtitle: 'Ví MoMo, ZaloPay, Thẻ Napas',
               onTap: () => Navigator.pushNamed(context, '/payment-methods'),
             ),
+            _buildMenuItem(
+              icon: Icons.place_outlined,
+              title: 'Địa điểm đã lưu (C48)',
+              subtitle: 'Nhà, trường học & bán kính tìm kiếm',
+              onTap: () => Navigator.pushNamed(context, '/saved-addresses'),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Merchant Portal Switch Card
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEF3C7),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFFDE68A)),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: AppColors.sdgGold,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.storefront, color: AppColors.forestGreenDark, size: 24),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'DÀNH CHO ĐỐI TÁC CỬA HÀNG',
+                          style: GoogleFonts.beVietnamPro(fontSize: 10, fontWeight: FontWeight.w800, color: const Color(0xFF92400E)),
+                        ),
+                        Text(
+                          'Chuyển sang Chế độ Chủ Quán (Merchant Flow)',
+                          style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.charcoal),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/merchant-home'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.forestGreen,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: Text('Vào', style: GoogleFonts.beVietnamPro(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)),
+                  ),
+                ],
+              ),
+            ),
 
             const SizedBox(height: 20),
 
             Text(
-              'THÔNG TIN & ĐIỀU KHOẢN',
+              'THÔNG TIN & HỖ TRỢ',
               style: GoogleFonts.beVietnamPro(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.primary, letterSpacing: 0.8),
             ),
             const SizedBox(height: 8),
 
+            _buildMenuItem(
+              icon: Icons.help_outline_rounded,
+              title: 'Trung tâm trợ giúp & FAQ (C53)',
+              subtitle: 'Câu hỏi thường gặp về túi bí mật & hoàn tiền',
+              onTap: () => Navigator.pushNamed(context, '/help-center'),
+            ),
+            _buildMenuItem(
+              icon: Icons.support_agent_rounded,
+              title: 'Gửi yêu cầu hỗ trợ (C54)',
+              subtitle: 'Báo cáo sự cố tại quán, đơn hàng',
+              onTap: () => Navigator.pushNamed(context, '/support-request'),
+            ),
             _buildMenuItem(
               icon: Icons.info_outline_rounded,
               title: 'Về dự án ResQ Bites & SDGs',

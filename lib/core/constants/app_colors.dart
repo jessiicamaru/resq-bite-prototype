@@ -7,6 +7,12 @@ class AppColors {
   static const Color primaryLight = Color(0xFFE5EFDA);
   static const Color accentSage = Color(0xFFD4E7D0);
 
+  // Aliases for design system consistency
+  static const Color forestGreen = primary;
+  static const Color forestGreenDark = primaryDark;
+  static const Color ecoIvory = background;
+  static const Color charcoal = Color(0xFF1F2937);
+
   // SDGs Accents
   static const Color sdgGold = Color(0xFFDDA63A); // SDG 2 Zero Hunger
   static const Color sdgOrange = Color(0xFFBF8B2E); // SDG 12 Responsible Consumption

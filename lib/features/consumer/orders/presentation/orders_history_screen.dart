@@ -152,6 +152,49 @@ class OrdersHistoryScreen extends StatelessWidget {
                 icon: const Icon(Icons.qr_code_rounded, size: 18),
                 label: const Text('Xuất trình mã QR tại quầy'),
               ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/order-receipt',
+                          arguments: {
+                            'bag': activeBag,
+                            'quantity': 1,
+                            'orderCode': 'RESQ-8942-DN',
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.receipt_outlined, size: 16),
+                      label: const Text('Biên nhận (C44)'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/cancel-order',
+                          arguments: {
+                            'bag': activeBag,
+                            'orderCode': 'RESQ-8942-DN',
+                          },
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.danger,
+                        side: const BorderSide(color: AppColors.danger),
+                      ),
+                      icon: const Icon(Icons.cancel_outlined, size: 16),
+                      label: const Text('Hủy đơn (C42)'),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
