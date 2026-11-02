@@ -373,3 +373,4 @@ class MerchantQrValidScreen extends StatelessWidget {
     );
   }
 }
+

@@ -242,3 +242,4 @@ class _MerchantQrScannerScreenState extends State<MerchantQrScannerScreen> {
     );
   }
 }
+

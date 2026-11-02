@@ -287,3 +287,4 @@ class _MerchantRevenueReportScreenState extends State<MerchantRevenueReportScree
     );
   }
 }
+

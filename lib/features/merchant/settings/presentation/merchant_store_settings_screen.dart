@@ -290,3 +290,4 @@ class MerchantStoreSettingsScreen extends StatelessWidget {
     );
   }
 }
+

@@ -198,3 +198,4 @@ class MerchantVerificationScreen extends StatelessWidget {
     );
   }
 }
+

@@ -159,3 +159,4 @@ class _SoldOutBagScreenState extends State<SoldOutBagScreen> {
     );
   }
 }
+

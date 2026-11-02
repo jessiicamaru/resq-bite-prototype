@@ -307,3 +307,4 @@ class MerchantFoodWasteReportScreen extends StatelessWidget {
     );
   }
 }
+

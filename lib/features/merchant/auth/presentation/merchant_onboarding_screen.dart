@@ -201,3 +201,4 @@ class MerchantOnboardingScreen extends StatelessWidget {
     );
   }
 }
+

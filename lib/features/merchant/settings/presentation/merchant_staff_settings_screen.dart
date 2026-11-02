@@ -220,3 +220,4 @@ class _MerchantStaffSettingsScreenState extends State<MerchantStaffSettingsScree
     );
   }
 }
+
