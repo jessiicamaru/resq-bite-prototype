@@ -23,14 +23,18 @@ import 'features/consumer/map/presentation/map_explorer_screen.dart';
 import 'features/consumer/mystery_bag/presentation/mystery_bag_detail_screen.dart';
 import 'features/consumer/mystery_bag/presentation/sold_out_bag_screen.dart';
 import 'features/consumer/navigation/consumer_main_nav_screen.dart';
+import 'features/consumer/orders/presentation/allergy_check_screen.dart';
 import 'features/consumer/orders/presentation/cancel_order_screen.dart';
 import 'features/consumer/orders/presentation/cart_checkout_screen.dart';
+import 'features/consumer/orders/presentation/confirm_order_screen.dart';
 import 'features/consumer/orders/presentation/delivery_mode_screen.dart';
+import 'features/consumer/orders/presentation/order_notes_screen.dart';
 import 'features/consumer/orders/presentation/order_qr_pickup_screen.dart';
 import 'features/consumer/orders/presentation/order_receipt_screen.dart';
 import 'features/consumer/orders/presentation/order_review_screen.dart';
 import 'features/consumer/orders/presentation/orders_history_screen.dart';
 import 'features/consumer/orders/presentation/payment_methods_screen.dart';
+import 'features/consumer/orders/presentation/payment_pending_screen.dart';
 import 'features/consumer/orders/presentation/payment_success_screen.dart';
 import 'features/consumer/profile/presentation/consumer_profile_screen.dart';
 import 'features/consumer/profile/presentation/help_center_screen.dart';
@@ -113,16 +117,64 @@ class ResQBitesApp extends StatelessWidget {
           case '/store-reviews':
             final bag = (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
             return MaterialPageRoute(builder: (_) => StoreReviewsScreen(bag: bag));
+          case '/allergy-check':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
+            return MaterialPageRoute(builder: (_) => AllergyCheckScreen(bag: bag));
+          case '/order-notes':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            return MaterialPageRoute(builder: (_) => OrderNotesScreen(bag: bag, initialQuantity: qty));
+          case '/delivery-mode':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            final notes = args?['notes'] as String?;
+            final bringOwnBag = (args?['bringOwnBag'] as bool?) ?? true;
+            return MaterialPageRoute(
+              builder: (_) => DeliveryModeScreen(bag: bag, quantity: qty, notes: notes, bringOwnBag: bringOwnBag),
+            );
           case '/cart-checkout':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            final notes = args?['notes'] as String?;
+            final bringOwnBag = (args?['bringOwnBag'] as bool?) ?? true;
+            final isDelivery = (args?['isDelivery'] as bool?) ?? false;
+            return MaterialPageRoute(
+              builder: (_) => CartCheckoutScreen(
+                bag: bag,
+                quantity: qty,
+                notes: notes,
+                bringOwnBag: bringOwnBag,
+                isDelivery: isDelivery,
+              ),
+            );
+          case '/payment-methods':
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
             final qty = (args?['quantity'] as int?) ?? 1;
-            return MaterialPageRoute(builder: (_) => CartCheckoutScreen(bag: bag, quantity: qty));
-          case '/delivery-mode':
-            final bag = (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
-            return MaterialPageRoute(builder: (_) => DeliveryModeScreen(bag: bag));
-          case '/payment-methods':
-            return MaterialPageRoute(builder: (_) => const PaymentMethodsScreen());
+            final cur = (args?['payment'] as String?) ?? 'MoMo';
+            return MaterialPageRoute(
+              builder: (_) => PaymentMethodsScreen(bag: bag, quantity: qty, currentMethod: cur),
+            );
+          case '/confirm-order':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            final payment = (args?['payment'] as String?) ?? 'MoMo';
+            return MaterialPageRoute(
+              builder: (_) => ConfirmOrderScreen(bag: bag, quantity: qty, payment: payment),
+            );
+          case '/payment-pending':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            final payment = (args?['payment'] as String?) ?? 'MoMo';
+            return MaterialPageRoute(
+              builder: (_) => PaymentPendingScreen(bag: bag, quantity: qty, payment: payment),
+            );
           case '/payment-success':
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;

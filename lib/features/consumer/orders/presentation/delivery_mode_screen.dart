@@ -1,278 +1,277 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/models/food_bag.dart';
 
-class DeliveryModeScreen extends StatefulWidget {
+class DeliveryModeScreen extends StatelessWidget {
   final MysteryBag bag;
+  final int quantity;
+  final String? notes;
+  final bool bringOwnBag;
 
-  const DeliveryModeScreen({super.key, required this.bag});
-
-  @override
-  State<DeliveryModeScreen> createState() => _DeliveryModeScreenState();
-}
-
-class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
-  int _selectedMode = 0; // 0: Tự đến lấy, 1: Giao tận nơi
+  const DeliveryModeScreen({
+    super.key,
+    required this.bag,
+    this.quantity = 1,
+    this.notes,
+    this.bringOwnBag = true,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat('#,###', 'vi_VN');
+    final totalPrice = bag.rescuePrice * quantity;
+
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         title: Text(
           'Bạn muốn nhận thế nào?',
           style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
+            fontSize: 15,
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            color: const Color(0xFF183B2E),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.forestGreen.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.forestGreen.withValues(alpha: 0.2)),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.eco, color: AppColors.forestGreen, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'ResQ Bites khuyến khích bạn tự đến nhận để giảm phát thải bao bì và khí thải CO₂ từ xe giao hàng.',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 13,
-                        color: AppColors.forestGreen,
-                        fontWeight: FontWeight.w600,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Mode 1: Tự đến lấy
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _selectedMode = 0;
-                });
-              },
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: _selectedMode == 0 ? AppColors.forestGreen : Colors.grey.shade200,
-                    width: _selectedMode == 0 ? 2 : 1,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: _selectedMode == 0 ? AppColors.forestGreen : Colors.grey.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.storefront_outlined,
-                        color: _selectedMode == 0 ? Colors.white : Colors.grey.shade700,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Tự đến nhận (Khuyên dùng)',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.charcoal,
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: AppColors.forestGreen.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  'Miễn phí',
-                                  style: GoogleFonts.beVietnamPro(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.forestGreen,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'Khung giờ nhận: ${widget.bag.pickupWindow}\nXuất trình mã QR tại quầy để lấy trong 10 giây.',
-                            style: GoogleFonts.beVietnamPro(
-                              fontSize: 13,
-                              color: Colors.grey.shade700,
-                              height: 1.4,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Mode 2: Giao tận nơi (v2)
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _selectedMode = 1;
-                });
-              },
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: _selectedMode == 1 ? AppColors.forestGreen : Colors.grey.shade200,
-                    width: _selectedMode == 1 ? 2 : 1,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: _selectedMode == 1 ? AppColors.forestGreen : Colors.grey.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.delivery_dining_outlined,
-                        color: _selectedMode == 1 ? Colors.white : Colors.grey.shade700,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Giao tận nơi (Green Eco)',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.charcoal,
-                                ),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '+15.000đ',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.sdgGold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'Giao bằng xe máy điện trong bán kính 3km.\nThời gian nhận dự kiến: 20:30 – 21:00.',
-                            style: GoogleFonts.beVietnamPro(
-                              fontSize: 13,
-                              color: Colors.grey.shade700,
-                              height: 1.4,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/cart-checkout',
-                  arguments: {
-                    'bag': widget.bag,
-                    'quantity': 1,
-                    'isDelivery': _selectedMode == 1,
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                backgroundColor: AppColors.forestGreen,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              child: Text(
-                'Tiếp tục đặt túi',
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Bạn muốn nhận thế nào?',
                 style: GoogleFonts.beVietnamPro(
-                  fontSize: 16,
+                  fontSize: 25,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                'Chọn trước khi thanh toán. Tùy cửa hàng và khu vực.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // Item Preview Card with Image
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        'assets/images/hero_c01.png',
+                        width: double.infinity,
+                        height: 140,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: double.infinity,
+                          height: 140,
+                          color: const Color(0xFFEAF3DD),
+                          child: const Icon(Icons.bakery_dining_rounded, size: 48, color: Color(0xFF12543B)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      bag.title,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${bag.storeName} · $quantity túi · ${currencyFormat.format(totalPrice)}đ',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Option 1: Tự đến nhận • Miễn phí
+              InkWell(
+                onTap: () {
+                  // BƯỚC TIẾP THEO: Kiểm tra đơn hàng (Image 7)
+                  Navigator.pushNamed(
+                    context,
+                    '/cart-checkout',
+                    arguments: {
+                      'bag': bag,
+                      'quantity': quantity,
+                      'notes': notes,
+                      'bringOwnBag': bringOwnBag,
+                      'isDelivery': false,
+                    },
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFE4E9E1)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Tự đến nhận · Miễn phí',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right, color: Color(0xFF183B2E), size: 20),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Nhận tại quầy ${bag.pickupWindow}',
+                        style: GoogleFonts.beVietnamPro(
+                          fontSize: 12,
+                          color: const Color(0xFF718076),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        bag.storeAddress,
+                        style: GoogleFonts.beVietnamPro(
+                          fontSize: 12,
+                          color: const Color(0xFF718076),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Option 2: Giao tận nơi • từ 18.000đ
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/cart-checkout',
+                    arguments: {
+                      'bag': bag,
+                      'quantity': quantity,
+                      'notes': notes,
+                      'bringOwnBag': bringOwnBag,
+                      'isDelivery': true,
+                    },
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFE4E9E1)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Giao tận nơi · từ 18.000đ',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right, color: Color(0xFF183B2E), size: 20),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Kiểm tra địa chỉ, phí và giờ giao trước khi đặt',
+                        style: GoogleFonts.beVietnamPro(
+                          fontSize: 12,
+                          color: const Color(0xFF718076),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Bottom note card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEBF2EB),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  'Giao hàng là luồng mở rộng của thiết kế. Phí và thời gian bên dưới là dữ liệu minh họa.',
+                  style: GoogleFonts.beVietnamPro(
+                    fontSize: 11,
+                    color: const Color(0xFF5A7263),
+                    height: 1.4,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

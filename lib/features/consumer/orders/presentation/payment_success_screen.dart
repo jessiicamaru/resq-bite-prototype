@@ -13,127 +13,179 @@ class PaymentSuccessScreen extends StatelessWidget {
     super.key,
     required this.bag,
     this.quantity = 1,
-    this.payment = 'Ví MoMo',
+    this.payment = 'MoMo',
   });
 
   @override
   Widget build(BuildContext context) {
     final currencyFormat = NumberFormat('#,###', 'vi_VN');
-    final savedAmount = (bag.originalPrice - bag.rescuePrice) * quantity;
+    final totalPrice = bag.rescuePrice * quantity;
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        title: Text(
+          'Túi ngon đã dành cho bạn!',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+        centerTitle: false,
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-
-              // Celebration Circle
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: const Icon(Icons.check_rounded, color: Colors.white, size: 54),
-              ),
-
-              const SizedBox(height: 24),
-
-              Text(
-                'Túi ngon đã dành cho bạn!',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.beVietnamPro(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-              ),
-
-              const SizedBox(height: 8),
-
-              Text(
-                'Thanh toán thành công qua $payment.\nCửa hàng đã sẵn sàng đóng gói túi bí mật cho bạn.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.beVietnamPro(fontSize: 13, color: AppColors.textSecondary, height: 1.45),
-              ),
-
-              const SizedBox(height: 28),
-
-              // Instant Green Impact Stat Box
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-                ),
-                child: Row(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Column(
                   children: [
+                    const SizedBox(height: 12),
+
+                    // Light-green circle with checkmark
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      width: 72,
+                      height: 72,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFE1F0DA),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        size: 38,
+                        color: Color(0xFF12543B),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Text(
+                      'Túi ngon đã dành cho bạn!',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      'Cảm ơn bạn đã chọn giải cứu một bữa ăn.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 13,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Information Card
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
                       ),
-                      child: const Icon(Icons.eco_rounded, color: AppColors.primary, size: 24),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'TÁC ĐỘNG TÍCH CỰC NGAY LẬP TỨC',
-                            style: GoogleFonts.beVietnamPro(fontSize: 9, fontWeight: FontWeight.w700, color: AppColors.primary, letterSpacing: 0.8),
+                            'RB-1024 • Thanh toán ${currencyFormat.format(totalPrice)}đ',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF183B2E),
+                            ),
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 14),
                           Text(
-                            'Tiết kiệm: ${currencyFormat.format(savedAmount)}đ · Giảm 2.4 kg CO₂',
-                            style: GoogleFonts.beVietnamPro(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                            bag.storeName,
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 13,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Text(
+                            'Nhận hôm nay ${bag.pickupWindow}',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 13,
+                              color: const Color(0xFF183B2E),
+                            ),
                           ),
                         ],
                       ),
                     ),
+
+                    const SizedBox(height: 20),
+
+                    // Bakery handover story image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        'assets/images/story_may.png',
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: double.infinity,
+                          height: 200,
+                          color: const Color(0xFFEAF3DD),
+                          child: const Icon(Icons.storefront_rounded, size: 64, color: Color(0xFF12543B)),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 16),
-
-              // Order details summary box
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: Column(
-                  children: [
-                    _buildRow('Mã đơn hàng', 'RESQ-8942-DN'),
-                    const SizedBox(height: 8),
-                    _buildRow('Cửa hàng', bag.storeName),
-                    const SizedBox(height: 8),
-                    _buildRow('Khung giờ lấy đồ', bag.pickupWindow),
-                  ],
-                ),
+            // Sticky Bottom CTA: Xem mã nhận hàng
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
               ),
-
-              const Spacer(),
-
-              SizedBox(
+              child: SizedBox(
                 width: double.infinity,
-                height: 52,
-                child: ElevatedButton.icon(
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: () {
+                    // BƯỚC TIẾP THEO: Vé nhận túi QR (Image 12)
                     Navigator.pushReplacementNamed(
                       context,
                       '/order-qr',
@@ -143,37 +195,19 @@ class PaymentSuccessScreen extends StatelessWidget {
                       },
                     );
                   },
-                  icon: const Icon(Icons.qr_code_rounded),
-                  label: const Text('Mở Vé Lấy Hàng (QR Code)'),
+                  child: Text(
+                    'Xem mã nhận hàng',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 12),
-
-              TextButton(
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false),
-                child: Text(
-                  'Về trang chủ',
-                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textSecondary),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  Widget _buildRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: GoogleFonts.beVietnamPro(fontSize: 12, color: AppColors.textSecondary)),
-        Text(value, style: GoogleFonts.beVietnamPro(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-      ],
-    );
-  }
 }
-

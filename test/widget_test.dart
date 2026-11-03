@@ -52,7 +52,7 @@ void main() {
       ),
     );
     expect(find.byType(CartCheckoutScreen), findsOneWidget);
-    expect(find.text('Xác Nhận Đặt Túi'), findsOneWidget);
+    expect(find.text('Túi của bạn'), findsOneWidget);
   });
 
   testWidgets('MerchantQrScannerScreen layout test', (WidgetTester tester) async {
