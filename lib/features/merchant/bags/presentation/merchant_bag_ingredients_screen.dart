@@ -308,3 +308,4 @@ class _MerchantBagIngredientsScreenState extends State<MerchantBagIngredientsScr
     );
   }
 }
+

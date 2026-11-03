@@ -13,8 +13,9 @@ class MerchantClosingShiftScreen extends StatelessWidget {
       builder: (context, _) {
         final store = MerchantStore.instance;
 
-        // Calculate dynamic unsold bags from store
+        // Calculate dynamic unsold bags and pending orders from store
         final unsoldBags = store.bags.fold<int>(0, (sum, b) => sum + (b.isSelling ? b.remainingQuantity : 0));
+        final pendingOrdersCount = store.orders.where((o) => o.status == 'Chờ nhận').length;
 
         return Scaffold(
           backgroundColor: AppColors.background,
@@ -133,35 +134,38 @@ class MerchantClosingShiftScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 14),
-                      // Card 2: Chờ nhận - 0 đơn
+                      // Card 2: Chờ nhận
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: const Color(0xFFE4E9E1)),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Chờ nhận',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 12,
-                                  color: const Color(0xFF718076),
+                        child: GestureDetector(
+                          onTap: () => Navigator.pushNamed(context, '/merchant-orders-pending'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFFE4E9E1)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Chờ nhận',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 12,
+                                    color: const Color(0xFF718076),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                '0 đơn',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF183B2E),
+                                const SizedBox(height: 6),
+                                Text(
+                                  '$pendingOrdersCount đơn',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF183B2E),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -351,3 +355,4 @@ class MerchantClosingShiftScreen extends StatelessWidget {
     );
   }
 }
+

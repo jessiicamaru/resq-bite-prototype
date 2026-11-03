@@ -178,7 +178,7 @@ class _MerchantDashboardScreenState extends State<MerchantDashboardScreen> {
                         child: GestureDetector(
                           onTap: () => Navigator.pushNamed(context, '/merchant-orders-pending'),
                           child: _buildMetricCard(
-                            value: '4 đơn',
+                            value: '${store.orders.where((o) => o.status == 'Chờ nhận').length} đơn',
                             subtitle: 'Đang chờ nhận',
                             isLink: true,
                           ),

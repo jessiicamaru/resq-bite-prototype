@@ -222,3 +222,4 @@ class MerchantActivitiesScreen extends StatelessWidget {
     );
   }
 }
+

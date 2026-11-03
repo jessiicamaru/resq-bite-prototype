@@ -374,3 +374,4 @@ class _MerchantBagQuantityScreenState extends State<MerchantBagQuantityScreen> {
     );
   }
 }
+

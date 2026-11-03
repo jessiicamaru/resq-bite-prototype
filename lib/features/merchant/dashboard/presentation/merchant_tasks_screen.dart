@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../data/store/merchant_store.dart';
 
 class MerchantTasksScreen extends StatelessWidget {
   const MerchantTasksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return AnimatedBuilder(
+      animation: MerchantStore.instance,
+      builder: (context, _) {
+        final store = MerchantStore.instance;
+        final pendingCount = store.orders.where((o) => o.status == 'Chờ nhận').length;
+        final totalStock = store.bags.fold<int>(0, (sum, b) => sum + (b.isSelling ? b.remainingQuantity : 0));
+
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: Container(
@@ -92,20 +100,20 @@ class MerchantTasksScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // Task item 1: 4 đơn sắp đến giờ nhận
+                    // Task item 1: Đơn sắp đến giờ nhận
                     _buildTaskItem(
                       context,
                       icon: Icons.notifications_active_outlined,
-                      title: '4 đơn sắp đến giờ nhận',
+                      title: '$pendingCount đơn sắp đến giờ nhận',
                       subtitle: 'Chuẩn bị túi',
                       onTap: () => Navigator.pushNamed(context, '/merchant-orders-pending'),
                     ),
 
-                    // Task item 2: Túi bánh còn 4
+                    // Task item 2: Túi bánh còn lại
                     _buildTaskItem(
                       context,
                       icon: Icons.inventory_2_outlined,
-                      title: 'Túi bánh còn 4',
+                      title: 'Túi bánh còn $totalStock',
                       subtitle: 'Kiểm tra tồn kho',
                       onTap: () => Navigator.pushNamed(context, '/merchant-bags'),
                     ),
@@ -154,6 +162,8 @@ class MerchantTasksScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+      },
     );
   }
 
@@ -219,3 +229,4 @@ class MerchantTasksScreen extends StatelessWidget {
     );
   }
 }
+

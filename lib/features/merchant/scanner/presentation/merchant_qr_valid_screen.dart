@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/models/merchant_order.dart';
+import '../../../../data/store/merchant_store.dart';
 
 class MerchantQrValidScreen extends StatelessWidget {
   final MerchantOrder? order;
@@ -142,6 +143,8 @@ class MerchantQrValidScreen extends StatelessWidget {
                     elevation: 0,
                   ),
                   onPressed: () {
+                    final targetCode = order?.orderCode ?? 'RB-1024';
+                    MerchantStore.instance.completeOrder(targetCode);
                     _showSuccessDialog(context);
                   },
                   child: Text(
@@ -215,7 +218,7 @@ class MerchantQrValidScreen extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Đơn hàng RB-1024 của khách Thanh Hậu đã được hoàn tất. +1 Bữa ngon được cứu!',
+              'Đơn hàng ${order?.orderCode ?? 'RB-1024'} của khách ${order?.customerName ?? 'Thanh Hậu'} đã được hoàn tất. +1 Bữa ngon được cứu!',
               textAlign: TextAlign.center,
               style: GoogleFonts.beVietnamPro(
                 fontSize: 12,

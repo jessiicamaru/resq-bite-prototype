@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../data/models/merchant_order.dart';
+import '../../../../data/store/merchant_store.dart';
 
 class MerchantQrScannerScreen extends StatefulWidget {
   const MerchantQrScannerScreen({super.key});
@@ -97,8 +99,13 @@ class _MerchantQrScannerScreenState extends State<MerchantQrScannerScreen>
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             onPressed: () {
+              final code = controller.text.trim();
               Navigator.pop(ctx);
-              Navigator.pushNamed(context, '/merchant-qr-valid');
+              final order = MerchantStore.instance.orders.cast<MerchantOrder?>().firstWhere(
+                (o) => o?.orderCode.toUpperCase() == code.toUpperCase(),
+                orElse: () => null,
+              );
+              Navigator.pushNamed(context, '/merchant-qr-valid', arguments: {'order': order});
             },
             child: Text(
               'Kiểm tra',
@@ -469,7 +476,11 @@ class _MerchantQrScannerScreenState extends State<MerchantQrScannerScreen>
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/merchant-qr-valid');
+                          final firstPending = MerchantStore.instance.orders.cast<MerchantOrder?>().firstWhere(
+                            (o) => o?.status == 'Chờ nhận',
+                            orElse: () => null,
+                          );
+                          Navigator.pushNamed(context, '/merchant-qr-valid', arguments: {'order': firstPending});
                         },
                         child: Text(
                           'Mã hợp lệ',

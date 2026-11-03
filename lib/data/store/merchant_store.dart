@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../models/merchant_order.dart';
 
 class MerchantBag {
   final String id;
@@ -109,6 +110,7 @@ class MerchantStore extends ChangeNotifier {
 
   late List<MerchantBag> bags;
   late MerchantBag draftBag;
+  late List<MerchantOrder> orders;
 
   void _initData() {
     bags = [
@@ -154,6 +156,102 @@ class MerchantStore extends ChangeNotifier {
       ),
     ];
     _resetDraftBag();
+    _initOrders();
+  }
+
+  void _initOrders() {
+    orders = [
+      MerchantOrder(
+        orderCode: 'RB-1024',
+        customerName: 'Thanh Hậu',
+        bagTitle: 'Túi bánh cuối ngày',
+        quantity: 1,
+        totalPrice: 35000,
+        pickupTime: '1 túi · Nhận 20:00–21:30',
+        status: 'Chờ nhận',
+        orderTime: DateTime.now().subtract(const Duration(minutes: 15)),
+      ),
+      MerchantOrder(
+        orderCode: 'RB-1025',
+        customerName: 'Minh Anh',
+        bagTitle: 'Túi bánh cuối ngày',
+        quantity: 2,
+        totalPrice: 70000,
+        pickupTime: '2 túi · Nhận 20:00–21:30',
+        status: 'Chờ nhận',
+        orderTime: DateTime.now().subtract(const Duration(minutes: 25)),
+      ),
+      MerchantOrder(
+        orderCode: 'RB-1026',
+        customerName: 'Quốc Bảo',
+        bagTitle: 'Túi bánh cuối ngày',
+        quantity: 1,
+        totalPrice: 35000,
+        pickupTime: '1 túi · Nhận 20:00–21:30',
+        status: 'Chờ nhận',
+        orderTime: DateTime.now().subtract(const Duration(minutes: 40)),
+      ),
+      MerchantOrder(
+        orderCode: 'RB-1027',
+        customerName: 'Thu Hà',
+        bagTitle: 'Bữa cơm nhà ấm bụng',
+        quantity: 2,
+        totalPrice: 70000,
+        pickupTime: '2 túi · Nhận 20:00–21:30',
+        status: 'Chờ nhận',
+        orderTime: DateTime.now().subtract(const Duration(hours: 1)),
+      ),
+      MerchantOrder(
+        orderCode: 'RB-1023',
+        customerName: 'Hoàng Nam',
+        bagTitle: 'Túi bánh cuối ngày',
+        quantity: 1,
+        totalPrice: 35000,
+        pickupTime: '1 túi · Đã bàn giao lúc 19:45',
+        status: 'Đã nhận',
+        orderTime: DateTime.now().subtract(const Duration(hours: 2)),
+      ),
+      MerchantOrder(
+        orderCode: 'RB-1022',
+        customerName: 'Lan Anh',
+        bagTitle: 'Bữa cơm nhà ấm bụng',
+        quantity: 1,
+        totalPrice: 39000,
+        pickupTime: '1 túi · Đã hủy lúc 19:15',
+        status: 'Đã hủy',
+        orderTime: DateTime.now().subtract(const Duration(hours: 3)),
+      ),
+    ];
+  }
+
+  void completeOrder(String code) {
+    final cleanCode = code.replaceAll('#', '').trim();
+    final idx = orders.indexWhere((o) => o.orderCode == cleanCode);
+    if (idx != -1) {
+      orders[idx].status = 'Đã nhận';
+      orders[idx].pickupTime = '${orders[idx].quantity} túi · Đã nhận thành công';
+      notifyListeners();
+    }
+  }
+
+  void cancelOrder(String code) {
+    final cleanCode = code.replaceAll('#', '').trim();
+    final idx = orders.indexWhere((o) => o.orderCode == cleanCode);
+    if (idx != -1) {
+      orders[idx].status = 'Đã hủy';
+      orders[idx].pickupTime = '${orders[idx].quantity} túi · Đã hủy theo yêu cầu';
+      notifyListeners();
+    }
+  }
+
+  void restoreOrder(String code) {
+    final cleanCode = code.replaceAll('#', '').trim();
+    final idx = orders.indexWhere((o) => o.orderCode == cleanCode);
+    if (idx != -1) {
+      orders[idx].status = 'Chờ nhận';
+      orders[idx].pickupTime = '${orders[idx].quantity} túi · Nhận 20:00–21:30';
+      notifyListeners();
+    }
   }
 
   void _resetDraftBag() {
