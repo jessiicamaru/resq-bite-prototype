@@ -10,377 +10,315 @@ class MerchantPickupWindowScreen extends StatefulWidget {
 }
 
 class _MerchantPickupWindowScreenState extends State<MerchantPickupWindowScreen> {
-  TimeOfDay _startTime = const TimeOfDay(hour: 20, minute: 0);
-  TimeOfDay _endTime = const TimeOfDay(hour: 21, minute: 30);
-  int _bagCount = 5;
-  bool _repeatDaily = true;
+  final _dateController = TextEditingController(text: 'Hôm nay, 22/10');
+  final _startTimeController = TextEditingController(text: '20:00');
+  final _endTimeController = TextEditingController(text: '21:30');
+  final _closeTimeController = TextEditingController(text: '22:00');
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _startTimeController.dispose();
+    _endTimeController.dispose();
+    _closeTimeController.dispose();
+    super.dispose();
+  }
+
+  void _onSave() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Đã cập nhật khung giờ nhận hàng thành công!')),
+    );
+    Navigator.pushReplacementNamed(context, '/merchant-bag-list');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         title: Text(
           'Khung giờ nhận hàng',
           style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
+            fontSize: 15,
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            color: const Color(0xFF183B2E),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Row(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Stepper matching Figma M16
+              Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.forestGreen.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.schedule, color: AppColors.forestGreen, size: 24),
+                  _buildStep('1', 'Kiểm tra', true),
+                  Expanded(child: Container(height: 2, color: const Color(0xFF12543B))),
+                  _buildStep('2', 'Thanh toán', true),
+                  Expanded(child: Container(height: 2, color: const Color(0xFF12543B))),
+                  _buildStep('3', 'Hoàn tất', false),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              Text(
+                'RESQ PARTNER',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF12543B),
+                  letterSpacing: 1.0,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Khung giờ nhận hàng',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Dành đủ thời gian chuẩn bị và bàn giao túi.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Date
+              Text(
+                'Ngày mở bán',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _dateController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: 'Hôm nay, 22/10',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
-                  const SizedBox(width: 14),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Start time & End time row
+              Row(
+                children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'ĐỒNG HỒ ĐẾM NGƯỢC GIỜ VÀNG',
+                          'Bắt đầu nhận',
                           style: GoogleFonts.beVietnamPro(
                             fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.forestGreen,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF183B2E),
                           ),
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Khách hàng sẽ theo dõi đồng hồ countdown để đến nhận trực tiếp tại quầy trong khung giờ này.',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 12,
-                            color: Colors.grey.shade700,
-                            height: 1.3,
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: const Color(0xFFE4E9E1)),
+                          ),
+                          child: TextField(
+                            controller: _startTimeController,
+                            style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                            decoration: const InputDecoration(
+                              hintText: '20:00',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Time Picker Card
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Cài đặt giờ mở cửa nhận túi',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.forestGreen,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () async {
-                            final picked = await showTimePicker(context: context, initialTime: _startTime);
-                            if (picked != null) setState(() => _startTime = picked);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Từ lúc', style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey)),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _startTime.format(context),
-                                  style: GoogleFonts.beVietnamPro(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.forestGreen,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () async {
-                            final picked = await showTimePicker(context: context, initialTime: _endTime);
-                            if (picked != null) setState(() => _endTime = picked);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Đến lúc', style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey)),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _endTime.format(context),
-                                  style: GoogleFonts.beVietnamPro(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.forestGreen,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Gợi ý khung giờ phổ biến:',
-                    style: GoogleFonts.beVietnamPro(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey.shade600),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      _buildPresetChip('20:00 – 21:30 (Tiệm bánh)', const TimeOfDay(hour: 20, minute: 0), const TimeOfDay(hour: 21, minute: 30)),
-                      _buildPresetChip('21:00 – 22:30 (Cà phê)', const TimeOfDay(hour: 21, minute: 0), const TimeOfDay(hour: 22, minute: 30)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Bag quantity (M17)
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Số lượng túi sẵn sàng hôm nay (M17)',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.forestGreen,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: _bagCount > 1 ? () => setState(() => _bagCount--) : null,
-                        icon: const Icon(Icons.remove_circle_outline, color: AppColors.forestGreen, size: 28),
-                      ),
-                      const SizedBox(width: 14),
-                      Text(
-                        '$_bagCount túi',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.charcoal,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      IconButton(
-                        onPressed: () => setState(() => _bagCount++),
-                        icon: const Icon(Icons.add_circle_outline, color: AppColors.forestGreen, size: 28),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Khách hàng sẽ thấy còn $_bagCount túi khả dụng trên bản đồ và có thể đặt trước.',
-                    style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Repeat setting
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.repeat, color: AppColors.forestGreen, size: 24),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Tự động lặp lại mỗi ngày',
+                          'Kết thúc nhận',
                           style: GoogleFonts.beVietnamPro(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.charcoal,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF183B2E),
                           ),
                         ),
-                        Text(
-                          'Tự động mở bán theo khung giờ này từ Thứ 2 đến Chủ Nhật',
-                          style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey.shade600),
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: const Color(0xFFE4E9E1)),
+                          ),
+                          child: TextField(
+                            controller: _endTimeController,
+                            style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                            decoration: const InputDecoration(
+                              hintText: '21:30',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Switch.adaptive(
-                    value: _repeatDaily,
-                    activeTrackColor: AppColors.forestGreen,
-                    onChanged: (val) => setState(() => _repeatDaily = val),
+                ],
+              ),
+
+              const SizedBox(height: 18),
+
+              // Store Closing time
+              Text(
+                'Cửa hàng đóng cửa',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _closeTimeController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: '22:00',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              Row(
+                children: [
+                  const Icon(Icons.info_outline_rounded, size: 15, color: Color(0xFF718076)),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'Khung giờ nhận phải kết thúc trước giờ đóng cửa.',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 32),
 
-            ElevatedButton(
-              onPressed: () {
-                _showSuccessPublishedDialog(context);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(54),
-                backgroundColor: AppColors.forestGreen,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              child: Text(
-                'Lưu & Mở bán túi ngay',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              const SizedBox(height: 32),
+
+              SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: _onSave,
+                  child: Text(
+                    'Cập nhật số lượng',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPresetChip(String label, TimeOfDay start, TimeOfDay end) {
-    return ActionChip(
-      label: Text(label),
-      labelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.forestGreen),
-      backgroundColor: AppColors.forestGreen.withValues(alpha: 0.08),
-      onPressed: () {
-        setState(() {
-          _startTime = start;
-          _endTime = end;
-        });
-      },
-    );
-  }
-
-  void _showSuccessPublishedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.forestGreen.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.check_circle, color: AppColors.forestGreen, size: 48),
+  Widget _buildStep(String number, String label, bool isActive) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: isActive ? const Color(0xFF12543B) : const Color(0xFFE4E9E1),
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            number,
+            style: GoogleFonts.beVietnamPro(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: isActive ? Colors.white : const Color(0xFF718076),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Túi đã được mở bán!',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Gói túi bí mật của Tiệm Bánh Mây đã xuất hiện trên bản đồ giải cứu và trang chủ của người dùng trong bán kính 5km.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 13,
-                color: Colors.grey.shade700,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.forestGreen,
-                minimumSize: const Size.fromHeight(44),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              child: Text(
-                'Về danh sách túi',
-                style: GoogleFonts.beVietnamPro(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive ? const Color(0xFF183B2E) : const Color(0xFF718076),
+          ),
+        ),
+      ],
     );
   }
 }

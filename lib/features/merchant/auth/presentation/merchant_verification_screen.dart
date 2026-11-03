@@ -8,80 +8,133 @@ class MerchantVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        title: Text(
+          'Hồ sơ đang được xem xét',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColors.sdgGold.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.hourglass_top_rounded,
-                  color: AppColors.sdgGold,
-                  size: 48,
-                ),
-              ),
-              const SizedBox(height: 20),
               Text(
                 'Hồ sơ đang được xem xét',
-                textAlign: TextAlign.center,
                 style: GoogleFonts.beVietnamPro(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.forestGreen,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
-                'Chúng mình đang xác thực chứng nhận ATVSTP của Tiệm Bánh Mây. Kết quả sẽ được gửi qua email trong vòng 24 giờ.',
-                textAlign: TextAlign.center,
+                'Chúng mình sẽ thông báo khi có kết quả.',
                 style: GoogleFonts.beVietnamPro(
-                  fontSize: 14,
-                  color: Colors.grey.shade700,
-                  height: 1.4,
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-              // Checklist
+              // Checklist matching Figma M04
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade200),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
                 ),
                 child: Column(
                   children: [
-                    _buildStepRow(
-                      icon: Icons.check_circle,
-                      iconColor: AppColors.forestGreen,
-                      title: 'Thông tin cửa hàng',
-                      subtitle: 'Đã nhận hồ sơ Tiệm Bánh Mây',
-                      isDone: true,
+                    _buildCheckRow('Thông tin cửa hàng', 'Đã nhận', true),
+                    const Divider(color: Color(0xFFE4E9E1), height: 20),
+                    _buildCheckRow('Giấy tờ kinh doanh', 'Đang kiểm tra', false),
+                    const Divider(color: Color(0xFFE4E9E1), height: 20),
+                    _buildCheckRow('Thông báo kết quả', 'Qua email đã đăng ký', false),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Status progress boxes matching Figma M04
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF3DD),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.check_circle_rounded, color: Color(0xFF12543B), size: 18),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Đã tiếp nhận',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF12543B),
+                          ),
+                        ),
+                      ],
                     ),
-                    const Divider(height: 28),
-                    _buildStepRow(
-                      icon: Icons.sync,
-                      iconColor: AppColors.sdgGold,
-                      title: 'Giấy tờ kinh doanh & ATTP',
-                      subtitle: 'Đang kiểm tra tính hợp lệ',
-                      isDone: false,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26, top: 2),
+                      child: Text(
+                        'Thông tin đã được ghi nhận',
+                        style: GoogleFonts.beVietnamPro(fontSize: 10, color: const Color(0xFF718076)),
+                      ),
                     ),
-                    const Divider(height: 28),
-                    _buildStepRow(
-                      icon: Icons.radio_button_unchecked,
-                      iconColor: Colors.grey.shade400,
-                      title: 'Kích hoạt mở bán túi',
-                      subtitle: 'Sẵn sàng bán túi cứu trợ',
-                      isDone: false,
+                    const SizedBox(height: 14),
+                    Row(
+                      children: [
+                        const Icon(Icons.pending_rounded, color: Color(0xFFDDA63A), size: 18),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Đang xử lý',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF183B2E),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26, top: 2),
+                      child: Text(
+                        'Kết quả sẽ được hiển thị khi hoàn tất',
+                        style: GoogleFonts.beVietnamPro(fontSize: 10, color: const Color(0xFF718076)),
+                      ),
                     ),
                   ],
                 ),
@@ -89,66 +142,23 @@ class MerchantVerificationScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Quick action for prototype
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.forestGreen.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.info_outline, color: AppColors.forestGreen, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Chế độ Prototype: Bạn có thể vào thẳng Dashboard vận hành của Tiệm Bánh Mây bên dưới.',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 12,
-                          color: AppColors.forestGreen,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/merchant-home');
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(54),
-                  backgroundColor: AppColors.forestGreen,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-                child: Text(
-                  'Vào Dashboard quản lý gian hàng',
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+              SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
                   ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                  side: const BorderSide(color: Colors.grey),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-                child: Text(
-                  'Về ứng dụng người mua',
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.charcoal,
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/merchant-home'),
+                  child: Text(
+                    'Đến trang quản lý',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -160,42 +170,37 @@ class MerchantVerificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStepRow({
-    required IconData icon,
-    required Color iconColor,
-    required String title,
-    required String subtitle,
-    required bool isDone,
-  }) {
+  Widget _buildCheckRow(String title, String status, bool isDone) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(icon, color: iconColor, size: 24),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.charcoal,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 12,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-            ],
+        Text(
+          title,
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF183B2E),
           ),
+        ),
+        Row(
+          children: [
+            Text(
+              status,
+              style: GoogleFonts.beVietnamPro(
+                fontSize: 11,
+                fontWeight: isDone ? FontWeight.w700 : FontWeight.w500,
+                color: isDone ? const Color(0xFF12543B) : const Color(0xFF718076),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              isDone ? Icons.check_circle_rounded : Icons.access_time_rounded,
+              size: 15,
+              color: isDone ? const Color(0xFF12543B) : const Color(0xFF718076),
+            ),
+          ],
         ),
       ],
     );
   }
 }
-

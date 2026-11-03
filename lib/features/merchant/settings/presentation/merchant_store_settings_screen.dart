@@ -8,286 +8,284 @@ class MerchantStoreSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text(
-          'Hồ sơ & Vận hành',
+          'Hồ sơ Tiệm Bánh Mây',
           style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
+            fontSize: 14,
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            color: const Color(0xFF183B2E),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFE4E9E1)),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: const Icon(Icons.more_horiz_rounded, size: 20, color: Color(0xFF183B2E)),
+              onPressed: () {},
+            ),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Store Card
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Store Header Image
+              SizedBox(
+                width: double.infinity,
+                height: 160,
+                child: Image.asset(
+                  'assets/images/story_may.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: const Color(0xFFEAF3DD),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.storefront_rounded, size: 48, color: Color(0xFF12543B)),
                   ),
-                ],
+                ),
               ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppColors.forestGreen,
-                    child: Text(
-                      'Mây',
-                      style: GoogleFonts.beVietnamPro(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Store Title & Verified Badge
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Tiệm Bánh Mây',
-                              style: GoogleFonts.beVietnamPro(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.charcoal,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            const Icon(Icons.verified, color: AppColors.forestGreen, size: 18),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
                         Text(
-                          '142 Nguyễn Thị Minh Khai, Hải Châu, ĐN',
-                          style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey.shade600),
+                          'Tiệm Bánh Mây',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF183B2E),
+                          ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(width: 10),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFDCFCE7),
+                            color: const Color(0xFFEAF3DD),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            'Đối tác đã xác minh ATVSTP',
+                            'Đã xác minh đối tác',
                             style: GoogleFonts.beVietnamPro(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF16A34A),
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF12543B),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
 
-            // Settings Group 1: Vận hành
-            Text(
-              'Cài đặt vận hành quán',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                children: [
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.storefront_outlined,
-                    title: 'Hồ sơ cửa hàng & Ảnh bìa',
-                    subtitle: 'Tên, mô tả và hotline quản lý',
-                    onTap: () {},
-                  ),
-                  const Divider(height: 1, indent: 56),
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.schedule_outlined,
-                    title: 'Giờ hoạt động quán (M38)',
-                    subtitle: '07:00 – 22:00 hàng ngày',
-                    onTap: () {},
-                  ),
-                  const Divider(height: 1, indent: 56),
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.place_outlined,
-                    title: 'Điểm nhận tại cửa hàng (M39)',
-                    subtitle: 'Quầy thu ngân chính tầng 1',
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
+                    const SizedBox(height: 22),
 
-            // Settings Group 2: Tài chính & Thanh toán
-            Text(
-              'Tài chính & Thanh toán',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                children: [
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.account_balance_outlined,
-                    title: 'Tài khoản nhận tiền (M40)',
-                    subtitle: 'Vietcombank •••• 6789 (NGUYEN MAI ANH)',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/merchant-bank-settings');
-                    },
-                  ),
-                  const Divider(height: 1, indent: 56),
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.receipt_long_outlined,
-                    title: 'Báo cáo doanh thu & Đối soát',
-                    subtitle: 'Xem chu kỳ quyết toán hàng tuần',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/merchant-revenue');
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
+                    // Section: Thông tin & vận hành
+                    Text(
+                      'Thông tin & vận hành',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildMenuRow(
+                            icon: Icons.storefront_outlined,
+                            title: 'Hồ sơ cửa hàng',
+                            subtitle: 'Tên, mô tả và liên hệ',
+                            onTap: () {},
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.schedule_outlined,
+                            title: 'Giờ hoạt động',
+                            subtitle: '07:00–22:00',
+                            onTap: () {},
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.location_on_outlined,
+                            title: 'Điểm nhận hàng',
+                            subtitle: '12 Trần Phú, Hải Châu',
+                            onTap: () {},
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.calendar_today_outlined,
+                            title: 'Lịch mở bán',
+                            subtitle: 'Thứ Hai – Thứ Bảy',
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
 
-            // Settings Group 3: Nhân sự & Hỗ trợ
-            Text(
-              'Nhân sự & Hỗ trợ',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                children: [
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.group_outlined,
-                    title: 'Nhân sự cửa hàng (M44)',
-                    subtitle: '3 nhân viên có quyền quét mã QR',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/merchant-staff');
-                    },
-                  ),
-                  const Divider(height: 1, indent: 56),
-                  _buildSettingTile(
-                    context,
-                    icon: Icons.headset_mic_outlined,
-                    title: 'Hỗ trợ đối tác 24/7 (M45)',
-                    subtitle: 'Hotline riêng cho Merchant: 1900 8943',
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
+                    const SizedBox(height: 22),
 
-            // Switch back to Consumer
-            OutlinedButton.icon(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/home');
-              },
-              icon: const Icon(Icons.swap_horiz, color: AppColors.forestGreen),
-              label: Text(
-                'Chuyển về Chế độ Người Dùng (Consumer Mode)',
-                style: GoogleFonts.beVietnamPro(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.forestGreen,
+                    // Section: Tài chính & nhân sự
+                    Text(
+                      'Tài chính & nhân sự',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildMenuRow(
+                            icon: Icons.account_balance_outlined,
+                            title: 'Tài khoản nhận tiền',
+                            subtitle: 'Vietcombank •••• 6789',
+                            onTap: () => Navigator.pushNamed(context, '/merchant-bank-settings'),
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.receipt_long_outlined,
+                            title: 'Đối soát doanh thu',
+                            subtitle: 'Kỳ 16–22/10',
+                            onTap: () => Navigator.pushNamed(context, '/merchant-revenue'),
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.people_outline_rounded,
+                            title: 'Nhân sự cửa hàng',
+                            subtitle: '3 thành viên',
+                            onTap: () => Navigator.pushNamed(context, '/merchant-staff'),
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.notifications_none_rounded,
+                            title: 'Thông báo',
+                            subtitle: null,
+                            onTap: () {},
+                          ),
+                          const Divider(color: Color(0xFFE4E9E1), height: 1, indent: 52),
+                          _buildMenuRow(
+                            icon: Icons.headset_mic_outlined,
+                            title: 'Hỗ trợ đối tác',
+                            subtitle: null,
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Role Switch Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: const BorderSide(color: Color(0xFFE4E9E1)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        ),
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
+                        icon: const Icon(Icons.swap_horiz_rounded, color: Color(0xFF183B2E), size: 18),
+                        label: Text(
+                          'Chuyển về Chế độ Người Dùng',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF183B2E),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                side: const BorderSide(color: AppColors.forestGreen, width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuRow({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: const Color(0xFF183B2E)),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF183B2E),
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 11,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
-            const SizedBox(height: 24),
+            const Icon(Icons.arrow_forward_ios_rounded, size: 13, color: Color(0xFF718076)),
           ],
         ),
       ),
     );
   }
-
-  Widget _buildSettingTile(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      onTap: onTap,
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.forestGreen.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(icon, color: AppColors.forestGreen, size: 20),
-      ),
-      title: Text(
-        title,
-        style: GoogleFonts.beVietnamPro(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.charcoal),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey.shade600),
-      ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
-    );
-  }
 }
-

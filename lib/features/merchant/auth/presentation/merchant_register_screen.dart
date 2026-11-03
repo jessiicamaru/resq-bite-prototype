@@ -11,290 +11,229 @@ class MerchantRegisterScreen extends StatefulWidget {
 
 class _MerchantRegisterScreenState extends State<MerchantRegisterScreen> {
   final _storeNameController = TextEditingController(text: 'Tiệm Bánh Mây');
-  final _addressController = TextEditingController(text: '142 Nguyễn Thị Minh Khai, Hải Châu, Đà Nẵng');
-  final _phoneController = TextEditingController(text: '0905 123 456');
-  final _licenseController = TextEditingController(text: 'ATTP-48/2024/ATTP-DN');
-
-  String _selectedCategory = 'Bánh mì & bánh ngọt';
-  bool _uploadedDoc = true;
-
-  final List<String> _categories = [
-    'Bánh mì & bánh ngọt',
-    'Cơm văn phòng & Bếp nấu',
-    'Món chay thực dưỡng',
-    'Cà phê & thức uống tươi',
-    'Cửa hàng tiện lợi & Trái cây',
-  ];
+  final _categoryController = TextEditingController(text: 'Bánh mì & bánh ngọt');
+  final _addressController = TextEditingController(text: '12 Trần Phú, Hải Châu');
+  final _phoneController = TextEditingController(text: '0236 3822 1234');
 
   @override
   void dispose() {
     _storeNameController.dispose();
+    _categoryController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
-    _licenseController.dispose();
     super.dispose();
+  }
+
+  void _onContinue() {
+    Navigator.pushNamed(context, '/merchant-verification');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Đăng ký đối tác ResQ',
-          style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
           ),
         ),
-        centerTitle: true,
+        title: Text(
+          'Thông tin cửa hàng',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+        centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.forestGreen.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.verified_outlined, color: AppColors.forestGreen, size: 24),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'CAM KẾT CHUẨN AN TOÀN VỆ SINH',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.forestGreen,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Thực phẩm giải cứu phải là đồ ăn thừa an toàn trong ngày, chưa qua sử dụng của khách.',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 12,
-                            color: Colors.grey.shade700,
-                            height: 1.3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Form
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Tên cửa hàng / Thương hiệu',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _storeNameController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.storefront, color: AppColors.forestGreen, size: 20),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'Danh mục ẩm thực chính',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<String>(
-                    initialValue: _selectedCategory,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                    ),
-                    items: _categories.map((c) {
-                      return DropdownMenuItem(
-                        value: c,
-                        child: Text(c, style: GoogleFonts.beVietnamPro(fontSize: 14)),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) setState(() => _selectedCategory = val);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'Địa chỉ cửa hàng tại Đà Nẵng',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.location_on_outlined, color: AppColors.forestGreen, size: 20),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'Số điện thoại liên hệ quản lý',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.phone_outlined, color: AppColors.forestGreen, size: 20),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'Số Giấy chứng nhận ATVSTP',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _licenseController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.assignment_turned_in_outlined, color: AppColors.forestGreen, size: 20),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'Ảnh giấy phép đăng ký KD & ATVSTP',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.charcoal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _uploadedDoc = !_uploadedDoc;
-                      });
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: _uploadedDoc ? AppColors.forestGreen.withValues(alpha: 0.08) : Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _uploadedDoc ? AppColors.forestGreen : Colors.grey.shade300,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            _uploadedDoc ? Icons.check_circle : Icons.upload_file,
-                            color: _uploadedDoc ? AppColors.forestGreen : Colors.grey.shade600,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            _uploadedDoc ? 'Đã tải: giay_chung_nhan_attp_may.pdf' : 'Tải lên giấy phép ATTP',
-                            style: GoogleFonts.beVietnamPro(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: _uploadedDoc ? AppColors.forestGreen : Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
-
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/merchant-verification');
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(54),
-                backgroundColor: AppColors.forestGreen,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              child: Text(
-                'Nộp hồ sơ xét duyệt',
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'RESQ PARTNER',
                 style: GoogleFonts.beVietnamPro(
-                  fontSize: 16,
+                  fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: const Color(0xFF12543B),
+                  letterSpacing: 1.0,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                'Thông tin cửa hàng',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Giúp khách hàng nhận ra cửa hàng của bạn.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
+                ),
+              ),
+              const SizedBox(height: 28),
+
+              // Store Name
+              Text(
+                'Tên cửa hàng',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _storeNameController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: 'Tiệm Bánh Mây',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Category
+              Text(
+                'Danh mục',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _categoryController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: 'Bánh mì & bánh ngọt',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Address
+              Text(
+                'Địa chỉ',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _addressController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: '12 Trần Phú, Hải Châu',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Phone number
+              Text(
+                'Số điện thoại',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                  style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF183B2E)),
+                  decoration: const InputDecoration(
+                    hintText: '0236 3822 1234',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: _onContinue,
+                  child: Text(
+                    'Tiếp tục',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

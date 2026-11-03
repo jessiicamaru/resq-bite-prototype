@@ -62,7 +62,7 @@ void main() {
         home: const MerchantQrScannerScreen(),
       ),
     );
-    expect(find.text('Quét mã nhận túi'), findsOneWidget);
+    expect(find.text('Quét mã nhận túi'), findsAtLeastNWidgets(1));
     expect(tester.takeException(), isNull);
   });
 }

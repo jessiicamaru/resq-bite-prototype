@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../data/mock/mock_data.dart';
-import '../../../../data/models/merchant_order.dart';
 
 class MerchantOrdersPendingScreen extends StatefulWidget {
   final int initialTab;
-
   const MerchantOrdersPendingScreen({super.key, this.initialTab = 0});
 
   @override
@@ -17,10 +13,41 @@ class MerchantOrdersPendingScreen extends StatefulWidget {
 class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final List<Map<String, dynamic>> _orders = [
+    {
+      'id': '#RB-1024',
+      'customer': 'Thanh Hậu',
+      'info': '1 túi · Nhận 20:00–21:30',
+      'price': '35.000đ',
+      'status': 'Chờ nhận',
+    },
+    {
+      'id': '#RB-1025',
+      'customer': 'Minh Anh',
+      'info': '2 túi · Nhận 20:00–21:30',
+      'price': '70.000đ',
+      'status': 'Chờ nhận',
+    },
+    {
+      'id': '#RB-1026',
+      'customer': 'Quốc Bảo',
+      'info': '1 túi · Nhận 20:00–21:30',
+      'price': '35.000đ',
+      'status': 'Chờ nhận',
+    },
+    {
+      'id': '#RB-1027',
+      'customer': 'Thu Hà',
+      'info': '2 túi · Nhận 20:00–21:30',
+      'price': '70.000đ',
+      'status': 'Chờ nhận',
+    },
+  ];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: widget.initialTab);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialTab);
   }
 
   @override
@@ -31,286 +58,298 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
 
   @override
   Widget build(BuildContext context) {
-    final pendingOrders = mockMerchantOrders.where((o) => o.status == 'pending').toList();
-    final completedOrders = mockMerchantOrders.where((o) => o.status == 'completed').toList();
-
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Đơn nhận tại quán',
-          style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
           ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner, color: AppColors.forestGreen),
-            tooltip: 'Mở quét mã',
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
             onPressed: () {
-              Navigator.pushNamed(context, '/merchant-scanner');
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushReplacementNamed(context, '/merchant-home');
+              }
             },
           ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: AppColors.forestGreen,
-          unselectedLabelColor: Colors.grey.shade600,
-          indicatorColor: AppColors.forestGreen,
-          labelStyle: GoogleFonts.beVietnamPro(fontWeight: FontWeight.w700, fontSize: 14),
-          tabs: [
-            Tab(text: 'Đơn chờ nhận (${pendingOrders.length})'),
-            Tab(text: 'Đã trao tay (${completedOrders.length})'),
-          ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildPendingList(pendingOrders),
-          _buildCompletedList(completedOrders),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPendingList(List<MerchantOrder> orders) {
-    final currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
-
-    if (orders.isEmpty) {
-      return Center(
-        child: Text(
-          'Không có đơn nào đang chờ nhận',
-          style: GoogleFonts.beVietnamPro(color: Colors.grey),
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.grey.shade200),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+        title: Text(
+          'Đơn chờ nhận',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    order.orderCode,
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.forestGreen,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFEF3C7),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Chờ khách đến lấy',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFB45309),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors.forestGreen.withValues(alpha: 0.1),
-                    child: Text(
-                      order.customerName.substring(0, 1),
-                      style: GoogleFonts.beVietnamPro(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.forestGreen,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          order.customerName,
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.charcoal,
-                          ),
-                        ),
-                        Text(
-                          '${order.quantity}x ${order.bagTitle} · ${currencyFormatter.format(order.totalPrice)}',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 13,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.ecoIvory,
-                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.access_time_filled, size: 16, color: AppColors.forestGreen),
-                    const SizedBox(width: 6),
-                    Text(
-                      'Khung giờ nhận: ${order.pickupTime}',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.forestGreenDark,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/merchant-qr-valid',
-                          arguments: {'order': order, 'isError': false},
-                        );
-                      },
-                      icon: const Icon(Icons.check_circle_outline, size: 16),
-                      label: const Text('Bàn giao nhanh'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.forestGreen,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
+                child: Text(
+                  'Đơn giao tận nơi',
+                  style: GoogleFonts.beVietnamPro(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF12543B),
                   ),
-                  const SizedBox(width: 10),
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/merchant-scanner');
-                    },
-                    icon: const Icon(Icons.qr_code, size: 16),
-                    label: const Text('Quét mã'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.forestGreen,
-                      side: const BorderSide(color: AppColors.forestGreen),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildCompletedList(List<MerchantOrder> orders) {
-    final currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 14),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.shade200),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFDCFCE7),
-                  shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.done_all, color: Color(0xFF16A34A), size: 20),
               ),
-              const SizedBox(width: 14),
-              Expanded(
+            ),
+          ),
+        ],
+        centerTitle: false,
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          order.orderCode,
-                          style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.charcoal),
-                        ),
-                        Text(
-                          currencyFormatter.format(order.totalPrice),
-                          style: GoogleFonts.beVietnamPro(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.forestGreen),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
                     Text(
-                      '${order.customerName} • ${order.quantity}x ${order.bagTitle}',
-                      style: GoogleFonts.beVietnamPro(fontSize: 12, color: Colors.grey.shade700),
+                      'RESQ PARTNER',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF12543B),
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Đơn chờ nhận',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Đã trao: ${order.pickupTime}',
-                      style: GoogleFonts.beVietnamPro(fontSize: 11, color: Colors.grey.shade500),
+                      '4 khách sẽ đến trong khung 20:00–21:30.',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
                     ),
+                    const SizedBox(height: 16),
+
+                    // 3 Tabs: Chờ nhận | Đã nhận | Đã hủy
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: TabBar(
+                        controller: _tabController,
+                        indicator: BoxDecoration(
+                          color: const Color(0xFF12543B),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: const Color(0xFF718076),
+                        labelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w700),
+                        unselectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w500),
+                        tabs: const [
+                          Tab(text: 'Chờ nhận'),
+                          Tab(text: 'Đã nhận'),
+                          Tab(text: 'Đã hủy'),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Search box: Tìm theo mã đơn…
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Icon(Icons.search_rounded, color: Color(0xFF718076), size: 18),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Tìm theo mã đơn…',
+                                hintStyle: GoogleFonts.beVietnamPro(
+                                  color: const Color(0xFF718076),
+                                  fontSize: 12,
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Orders list matching Figma M23
+                    ..._orders.map((order) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: const Color(0xFFE4E9E1)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  order['id'] as String,
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF183B2E),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFE6CF),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    order['status'] as String,
+                                    style: GoogleFonts.beVietnamPro(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF8F4C17),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              order['customer'] as String,
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF183B2E),
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              order['info'] as String,
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                color: const Color(0xFF718076),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Divider(color: Color(0xFFE4E9E1), height: 1),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  order['price'] as String,
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF183B2E),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => Navigator.pushNamed(context, '/merchant-qr-valid'),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFEAF3DD),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'Chi tiết',
+                                      style: GoogleFonts.beVietnamPro(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF12543B),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            ),
+
+            // Sticky Bottom CTA matching Figma M23: Quét mã nhận hàng
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(color: Color(0xFFE4E9E1)),
+                ),
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, '/merchant-scanner'),
+                  icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
+                  label: Text(
+                    'Quét mã nhận hàng',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

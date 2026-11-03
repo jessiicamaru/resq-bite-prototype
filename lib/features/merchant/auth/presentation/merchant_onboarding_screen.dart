@@ -8,197 +8,190 @@ class MerchantOnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/merchant-home');
-            },
-            child: Text(
-              'Vào Dashboard thử',
-              style: GoogleFonts.beVietnamPro(
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.forestGreen.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
+        child: Column(
+          children: [
+            // Topbar matching Figma M01
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFE4E9E1)),
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+                      color: const Color(0xFF183B2E),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Chào mừng đến ResQ Bites',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF183B2E),
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacementNamed(context, '/merchant-home'),
+                    child: Text(
+                      'Bỏ qua',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Scrollable Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+
+                    // Hero Photo
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: Image.asset(
+                        'assets/screens/hero_c01.png',
+                        height: 280,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          height: 280,
+                          color: const Color(0xFFEAF3DD),
+                          child: const Icon(Icons.storefront_rounded, size: 64, color: Color(0xFF12543B)),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Logo Mark: resq bites.
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'resq',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFF183B2E),
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        Text(
+                          'bites.',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFF80A05B),
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Title
+                    Text(
+                      'Cùng cứu những bữa ngon',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                        height: 1.25,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Subtitle
+                    Text(
+                      'Biến thực phẩm cuối ngày thành cơ hội mới.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Badge: DÀNH CHO ĐỐI TÁC
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEAF3DD),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        'DÀNH CHO ĐỐI TÁC',
+                        style: GoogleFonts.beVietnamPro(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF12543B),
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-                child: Text(
-                  'DÀNH CHO ĐỐI TÁC F&B',
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.forestGreen,
-                    letterSpacing: 0.5,
+              ),
+            ),
+
+            // Sticky Bottom CTA container
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(color: Color(0xFFE4E9E1)),
+                ),
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, '/merchant-register'),
+                  child: Text(
+                    'Đăng ký cửa hàng',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              Text(
-                'Cùng cứu những bữa ngon',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.forestGreen,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Biến thực phẩm cuối ngày thành cơ hội mới và lan tỏa tiêu dùng có trách nhiệm.',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 14,
-                  color: Colors.grey.shade700,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 28),
-
-              // Feature cards
-              _buildFeatureItem(
-                icon: Icons.savings_outlined,
-                title: 'Tối ưu chi phí thất thoát',
-                desc: 'Bán các gói thực phẩm chuẩn an toàn vào cuối ngày thay vì hủy bỏ lãng phí.',
-              ),
-              const SizedBox(height: 14),
-              _buildFeatureItem(
-                icon: Icons.inventory_2_outlined,
-                title: 'Mô hình Túi bí mật (Mystery Bag)',
-                desc: 'Không cần đăng lẻ từng món, đóng gói ngẫu nhiên theo danh mục mà không làm giảm giá trị thương hiệu.',
-              ),
-              const SizedBox(height: 14),
-              _buildFeatureItem(
-                icon: Icons.qr_code_scanner_outlined,
-                title: 'Nhận hàng tại quầy nhanh gọn',
-                desc: 'Khách đến tự nhận theo khung giờ quy định, quét mã QR bàn giao chỉ trong 5 giây.',
-              ),
-              const SizedBox(height: 14),
-              _buildFeatureItem(
-                icon: Icons.eco_outlined,
-                title: 'Đồng hành cùng SDG 12 & SDG 2',
-                desc: 'Nhận chứng nhận Gian hàng Xanh và báo cáo giảm khí thải CO₂ định kỳ.',
-              ),
-
-              const Spacer(),
-
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/merchant-register');
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(54),
-                  backgroundColor: AppColors.forestGreen,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  elevation: 2,
-                ),
-                child: Text(
-                  'Đăng ký đối tác ngay',
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/merchant-home');
-                },
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                  side: const BorderSide(color: AppColors.forestGreen, width: 1.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-                child: Text(
-                  'Đã là đối tác? Vào cửa hàng Mây',
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.forestGreen,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildFeatureItem({
-    required IconData icon,
-    required String title,
-    required String desc,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.forestGreen.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: AppColors.forestGreen, size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.charcoal,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  desc,
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
 }
-

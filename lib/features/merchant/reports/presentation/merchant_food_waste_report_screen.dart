@@ -7,304 +7,413 @@ class MerchantFoodWasteReportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> dailyBars = [
+      {'day': 'T2', 'height': 0.6},
+      {'day': 'T3', 'height': 0.72},
+      {'day': 'T4', 'height': 0.55},
+      {'day': 'T5', 'height': 0.8},
+      {'day': 'T6', 'height': 0.88},
+      {'day': 'T7', 'height': 1.0},
+      {'day': 'CN', 'height': 0.48},
+    ];
+
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         title: Text(
           'Tác động từ cửa hàng',
           style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
+            fontSize: 14,
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            color: const Color(0xFF183B2E),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hero Impact Card
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.forestGreen, Color(0xFF0F3D2A)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'RESQ PARTNER',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF63834D),
+                  letterSpacing: 0.8,
                 ),
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.forestGreen.withValues(alpha: 0.3),
-                    blurRadius: 14,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.sdgGold.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.sdgGold),
+              const SizedBox(height: 2),
+              Text(
+                'Tác động từ cửa hàng',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Mỗi túi được trao là một cơ hội giảm lãng phí.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // Green Card: THÁNG 10 CỦA MÂY
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(22),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF12543B),
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF12543B).withValues(alpha: 0.25),
+                      blurRadius: 14,
+                      offset: const Offset(0, 4),
                     ),
-                    child: Text(
-                      'BÁO CÁO THÁNG 10 CỦA MÂY',
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'THÁNG 10 CỦA MÂY',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white.withValues(alpha: 0.8),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '540',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 56,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            height: 1.0,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'túi',
+                          style: GoogleFonts.beVietnamPro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'đã tìm được người thưởng thức',
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.sdgGold,
-                        letterSpacing: 0.8,
+                        color: Colors.white.withValues(alpha: 0.85),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Stat Grid (2 Columns)
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Trong tuần',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 10,
+                              color: const Color(0xFF718076),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '126',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 23,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'túi được cứu',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF60834E),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        '540',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 48,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'túi thức ăn',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white.withValues(alpha: 0.9),
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Cửa hàng đồng hành',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 10,
+                              color: const Color(0xFF718076),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '4,8★',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'đánh giá trung bình',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF60834E),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                  Text(
-                    'đã tìm được người thưởng thức thay vì bị lãng phí.',
-                    textAlign: TextAlign.center,
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // Section Title: Đều đặn tạo nên thay đổi
+              Text(
+                'Đều đặn tạo nên thay đổi',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Chart Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 110,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: dailyBars.map((d) {
+                          final double h = (d['height'] as double) * 80;
+                          final isPeak = d['day'] == 'T7';
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: 28,
+                                height: h,
+                                decoration: BoxDecoration(
+                                  color: isPeak ? const Color(0xFF12543B) : const Color(0xFFA4C777),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                d['day'] as String,
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF718076),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Số túi mỗi ngày · Dữ liệu minh họa',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 10,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              // Notice green pill
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF3DD),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.info_outline_rounded, size: 16, color: Color(0xFF12543B)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Chưa quy đổi túi thành kg thực phẩm hoặc CO₂ khi chưa có dữ liệu đo và hệ số kiểm chứng.',
+                        style: GoogleFonts.beVietnamPro(
+                          fontSize: 11,
+                          color: const Color(0xFF12543B),
+                          height: 1.35,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Image Card
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/images/story_may.png',
+                  height: 160,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 160,
+                    color: const Color(0xFFEAF3DD),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.eco_rounded, size: 48, color: Color(0xFF12543B)),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Heading slogan
+              Text(
+                'Tốt cho bạn.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                  height: 1.2,
+                ),
+              ),
+              Text(
+                'Tốt cho hành tinh.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Giảm thực phẩm bị bỏ đi bắt đầu từ những lựa chọn nhỏ trong ngày.',
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 12,
+                  color: const Color(0xFF718076),
+                  height: 1.4,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // CTA Button: Xem đánh giá cửa hàng
+              SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, '/store-reviews'),
+                  child: Text(
+                    'Xem đánh giá cửa hàng',
                     style: GoogleFonts.beVietnamPro(
                       fontSize: 13,
-                      color: Colors.white.withValues(alpha: 0.8),
+                      fontWeight: FontWeight.w700,
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildHeroMiniStat('1.285 kg', 'CO₂ tránh phát thải'),
-                        Container(width: 1, height: 32, color: Colors.white.withValues(alpha: 0.2)),
-                        _buildHeroMiniStat('430 kg', 'Rác thực phẩm giảm'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // SDGs Alignment
-            Text(
-              'Đóng góp vào Mục tiêu Toàn cầu (SDGs)',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 12),
-            _buildSdgCard(
-              sdgNumber: '12',
-              sdgTitle: 'Tiêu dùng & Sản xuất có trách nhiệm',
-              sdgColor: const Color(0xFFBF8B2E),
-              description:
-                  'Tiệm Bánh Mây đã giảm thất thoát thực phẩm đạt 88.5%, vượt chỉ tiêu tiêu dùng bền vững của thành phố Đà Nẵng.',
-            ),
-            const SizedBox(height: 12),
-            _buildSdgCard(
-              sdgNumber: '2',
-              sdgTitle: 'Zero Hunger (Xóa đói & Dinh dưỡng)',
-              sdgColor: const Color(0xFFDDA63A),
-              description:
-                  'Giúp 540 lượt người tiêu dùng trẻ và sinh viên tiếp cận bữa ăn giàu dinh dưỡng với giá chỉ bằng 35% giá gốc.',
-            ),
-            const SizedBox(height: 24),
-
-            // Green Certificate Badge
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.sdgGold.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.workspace_premium, color: AppColors.sdgGold, size: 36),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Chứng nhận Đối tác Xanh ResQ',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.charcoal,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Hạng Bạc · Tháng 10/2024\nĐã cứu hơn 500 bữa ăn ngon.',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            height: 1.3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
-
-            ElevatedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Đã lưu ảnh chứng nhận tác động xanh vào thư viện!')),
-                );
-              },
-              icon: const Icon(Icons.share, size: 18),
-              label: Text(
-                'Chia sẻ thành tích xanh của quán',
-                style: GoogleFonts.beVietnamPro(fontSize: 15, fontWeight: FontWeight.w700),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                backgroundColor: AppColors.forestGreen,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeroMiniStat(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: GoogleFonts.beVietnamPro(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: GoogleFonts.beVietnamPro(
-            fontSize: 11,
-            color: Colors.white.withValues(alpha: 0.8),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSdgCard({
-    required String sdgNumber,
-    required String sdgTitle,
-    required Color sdgColor,
-    required String description,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: sdgColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              sdgNumber,
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  sdgTitle,
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.charcoal,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                    height: 1.35,
-                  ),
-                ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 16),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
-
