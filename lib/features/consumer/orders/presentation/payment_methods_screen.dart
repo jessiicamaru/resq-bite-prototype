@@ -159,9 +159,13 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
               const Spacer(),
 
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context, _selected),
-                child: const Text('Xác nhận phương thức này'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context, _selected),
+                  child: const Text('Xác nhận phương thức này'),
+                ),
               ),
 
               const SizedBox(height: 16),

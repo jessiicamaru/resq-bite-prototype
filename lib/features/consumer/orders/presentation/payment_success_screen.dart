@@ -129,19 +129,23 @@ class PaymentSuccessScreen extends StatelessWidget {
 
               const Spacer(),
 
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    '/order-qr',
-                    arguments: {
-                      'bag': bag,
-                      'quantity': quantity,
-                    },
-                  );
-                },
-                icon: const Icon(Icons.qr_code_rounded),
-                label: const Text('Mở Vé Lấy Hàng (QR Code)'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/order-qr',
+                      arguments: {
+                        'bag': bag,
+                        'quantity': quantity,
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.qr_code_rounded),
+                  label: const Text('Mở Vé Lấy Hàng (QR Code)'),
+                ),
               ),
 
               const SizedBox(height: 12),

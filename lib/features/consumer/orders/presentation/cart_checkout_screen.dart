@@ -140,6 +140,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         width: 70,
                         height: 70,
                         fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => Container(
+                          width: 70,
+                          height: 70,
+                          color: AppColors.primaryLight,
+                          child: const Icon(Icons.fastfood, color: AppColors.primary),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -258,9 +264,13 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
               const SizedBox(height: 28),
 
-              ElevatedButton(
-                onPressed: _onConfirmPayment,
-                child: Text('Xác nhận & Thanh toán (${currencyFormat.format(rescueTotal)}đ)'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _onConfirmPayment,
+                  child: Text('Xác nhận & Thanh toán (${currencyFormat.format(rescueTotal)}đ)'),
+                ),
               ),
 
               const SizedBox(height: 20),

@@ -19,7 +19,7 @@ class _MysteryBagDetailScreenState extends State<MysteryBagDetailScreen> {
   void _onOrderNow() {
     Navigator.pushNamed(
       context,
-      '/order-qr',
+      '/cart-checkout',
       arguments: {
         'bag': widget.bag,
         'quantity': _quantity,
