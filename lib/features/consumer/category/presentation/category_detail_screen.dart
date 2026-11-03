@@ -187,7 +187,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                           ClipRRect(
                             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                             child: Image.asset(
-                              'assets/screens/hero_c01.png',
+                              'assets/images/hero_c01.png',
                               height: 160,
                               width: double.infinity,
                               fit: BoxFit.cover,
@@ -344,21 +344,21 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   'bag': 'Bữa cơm nhà ấm bụng',
                   'price': '39.000đ',
                   'bags': '3 túi',
-                  'image': 'assets/screens/hero_c02.png',
+                  'image': 'assets/images/hero_c02.png',
                 },
                 {
                   'store': 'Green Bowl',
                   'bag': 'Túi xanh đủ chất',
                   'price': '32.000đ',
                   'bags': '2 túi',
-                  'image': 'assets/screens/hero_c03.png',
+                  'image': 'assets/images/hero_c03.png',
                 },
                 {
                   'store': 'Fresh Corner',
                   'bag': 'Một ngụm tươi mới',
                   'price': '25.000đ',
                   'bags': '5 túi',
-                  'image': 'assets/screens/hero_c04.png',
+                  'image': 'assets/images/hero_c04.png',
                 },
               ].map((item) {
                 return Padding(

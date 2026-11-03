@@ -391,7 +391,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                         'price': '35.000đ',
                         'oldPrice': '100.000đ',
                         'time': '20:00–21:30',
-                        'image': 'assets/screens/hero_c01.png',
+                        'image': 'assets/images/hero_c01.png',
                       },
                       {
                         'store': 'Bếp Nhà',
@@ -404,7 +404,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                         'price': '39.000đ',
                         'oldPrice': '95.000đ',
                         'time': '19:30–20:30',
-                        'image': 'assets/screens/hero_c02.png',
+                        'image': 'assets/images/hero_c02.png',
                       },
                       {
                         'store': 'Fresh Corner',
@@ -417,7 +417,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                         'price': '25.000đ',
                         'oldPrice': '65.000đ',
                         'time': '20:00–21:00',
-                        'image': 'assets/screens/hero_c04.png',
+                        'image': 'assets/images/hero_c04.png',
                       },
                     ];
                     final item = items[index];
@@ -621,7 +621,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                       'price': '32.000đ',
                       'oldPrice': '80.000đ',
                       'time': '20:00–22:00',
-                      'image': 'assets/screens/hero_c03.png',
+                      'image': 'assets/images/hero_c03.png',
                     },
                     {
                       'store': 'Fresh Corner',
@@ -634,7 +634,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                       'price': '25.000đ',
                       'oldPrice': '65.000đ',
                       'time': '20:00–21:00',
-                      'image': 'assets/screens/hero_c04.png',
+                      'image': 'assets/images/hero_c04.png',
                     },
                   ];
                   final item = items[index];
@@ -890,7 +890,7 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                             ClipRRect(
                               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                               child: Image.asset(
-                                'assets/screens/story_may.png',
+                                'assets/images/story_may.png',
                                 height: 160,
                                 width: double.infinity,
                                 fit: BoxFit.cover,

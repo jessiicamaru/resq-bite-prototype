@@ -17,21 +17,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String>> _slides = [
     {
       'code': 'C02',
-      'image': 'assets/screens/hero_c02.png',
+      'image': 'assets/images/hero_c02.png',
       'title': 'Bữa ngon, giá nhẹ',
       'subtitle': 'Đồ ăn cuối ngày vẫn có thể trở thành một bữa ngon.',
       'btn': 'Tiếp tục',
     },
     {
       'code': 'C03',
-      'image': 'assets/screens/hero_c03.png',
+      'image': 'assets/images/hero_c03.png',
       'title': 'Một túi bất ngờ',
       'subtitle': 'Biết danh mục, bất ngờ với món ngon bên trong.',
       'btn': 'Tiếp tục',
     },
     {
       'code': 'C04',
-      'image': 'assets/screens/hero_c04.png',
+      'image': 'assets/images/hero_c04.png',
       'title': 'Đến nhận, cứu một bữa',
       'subtitle': 'Đặt trước. Đến đúng giờ. Đưa mã QR tại quầy.',
       'btn': 'Khám phá ngay',

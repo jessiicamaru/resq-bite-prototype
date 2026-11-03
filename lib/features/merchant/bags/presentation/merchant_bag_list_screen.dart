@@ -18,21 +18,21 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> {
       'price': '35.000đ · Giá gốc 100.000đ',
       'remaining': 4,
       'isSelling': true,
-      'image': 'assets/screens/hero_c01.png',
+      'image': 'assets/images/hero_c01.png',
     },
     {
       'title': 'Bữa cơm nhà ấm bụng',
       'price': '39.000đ · Giá gốc 95.000đ',
       'remaining': 3,
       'isSelling': true,
-      'image': 'assets/screens/hero_c02.png',
+      'image': 'assets/images/hero_c02.png',
     },
     {
       'title': 'Túi xanh đủ chất',
       'price': '32.000đ · Giá gốc 80.000đ',
       'remaining': 2,
       'isSelling': true,
-      'image': 'assets/screens/hero_c03.png',
+      'image': 'assets/images/hero_c03.png',
     },
   ];
 

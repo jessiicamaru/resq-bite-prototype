@@ -69,7 +69,7 @@ class MerchantOnboardingScreen extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(24),
                       child: Image.asset(
-                        'assets/screens/hero_c01.png',
+                        'assets/images/hero_c01.png',
                         height: 280,
                         width: double.infinity,
                         fit: BoxFit.cover,

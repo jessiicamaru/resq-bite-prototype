@@ -72,7 +72,7 @@ class SplashScreen extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         children: [
                           Image.asset(
-                            'assets/screens/hero_c01.png',
+                            'assets/images/hero_c01.png',
                             height: 280,
                             width: double.infinity,
                             fit: BoxFit.cover,

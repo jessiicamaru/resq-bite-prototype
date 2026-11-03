@@ -215,7 +215,7 @@ class _MerchantCreateBagScreenState extends State<MerchantCreateBagScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
-                        'assets/screens/hero_c01.png',
+                        'assets/images/hero_c01.png',
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,

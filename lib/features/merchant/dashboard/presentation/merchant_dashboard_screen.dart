@@ -426,14 +426,14 @@ class _MerchantDashboardScreenState extends State<MerchantDashboardScreen> {
                   'bag': 'Túi bánh cuối ngày',
                   'price': '35.000đ',
                   'bags': '4 túi',
-                  'image': 'assets/screens/hero_c01.png',
+                  'image': 'assets/images/hero_c01.png',
                 },
                 {
                   'store': 'Bếp Nhà',
                   'bag': 'Bữa cơm nhà ấm bụng',
                   'price': '39.000đ',
                   'bags': '3 túi',
-                  'image': 'assets/screens/hero_c02.png',
+                  'image': 'assets/images/hero_c02.png',
                 },
               ].map((item) {
                 return Padding(
