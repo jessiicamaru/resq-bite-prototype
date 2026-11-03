@@ -37,12 +37,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () => Navigator.pop(context),
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.border),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: AppColors.textPrimary,
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        title: const Text('Tạo tài khoản'),
+        title: Text(
+          'Tạo tài khoản',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,15 +86,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 6),
               Text(
-                'Bắt đầu từ một bữa ăn nhỏ hướng tới lối sống xanh.',
+                'Bắt đầu từ một bữa ăn nhỏ.',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
-                  color: AppColors.textSecondary,
+                  color: const Color(0xFF718076),
                 ),
               ),
               const SizedBox(height: 28),
@@ -84,15 +105,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Thanh Hậu',
-                  prefixIcon: Icon(Icons.person_outline_rounded, size: 20, color: AppColors.textMuted),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _nameController,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: const InputDecoration(
+                    hintText: 'Thanh Hậu',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                 ),
               ),
 
@@ -104,16 +134,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'hau@example.com',
-                  prefixIcon: Icon(Icons.mail_outline_rounded, size: 20, color: AppColors.textMuted),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: const InputDecoration(
+                    hintText: 'hau@example.com',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                 ),
               ),
 
@@ -125,42 +164,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  hintText: 'Tối thiểu 8 ký tự',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.textMuted),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                      size: 20,
-                      color: AppColors.textMuted,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: InputDecoration(
+                    hintText: 'Tối thiểu 8 ký tự',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        size: 20,
+                        color: const Color(0xFF718076),
+                      ),
+                      onPressed: () {
+                        setState(() => _obscurePassword = !_obscurePassword);
+                      },
                     ),
-                    onPressed: () {
-                      setState(() => _obscurePassword = !_obscurePassword);
-                    },
                   ),
                 ),
               ),
 
               const SizedBox(height: 18),
 
-              // Terms
+              // Terms checkbox
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 24,
-                    width: 24,
+                    height: 20,
+                    width: 20,
                     child: Checkbox(
                       value: _agreeTerms,
-                      activeColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      activeColor: const Color(0xFF12543B),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                      side: const BorderSide(color: Color(0xFFD9D9D9), width: 1.5),
                       onChanged: (val) => setState(() => _agreeTerms = val ?? false),
                     ),
                   ),
@@ -169,10 +218,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: GestureDetector(
                       onTap: () => setState(() => _agreeTerms = !_agreeTerms),
                       child: Text(
-                        'Tôi đồng ý điều khoản sử dụng và chính sách giảm lãng phí thực phẩm.',
+                        'Tôi đồng ý điều khoản sử dụng và chính sách quyền riêng tư.',
                         style: GoogleFonts.beVietnamPro(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: const Color(0xFF718076),
                           height: 1.4,
                         ),
                       ),
@@ -183,39 +232,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               const SizedBox(height: 28),
 
+              // Submit Button
               SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 49,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: _agreeTerms ? _onRegister : null,
-                  child: const Text('Tạo tài khoản'),
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Đã có tài khoản? ',
+                  child: Text(
+                    'Tạo tài khoản',
                     style: GoogleFonts.beVietnamPro(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Text(
-                      'Đăng nhập',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
@@ -224,4 +260,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-

@@ -31,12 +31,33 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () => Navigator.pop(context),
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.border),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: AppColors.textPrimary,
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        title: const Text('Quên mật khẩu?'),
+        title: Text(
+          'Quên mật khẩu?',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
         child: Padding(
@@ -59,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 6),
@@ -67,7 +88,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 'Nhập email đã đăng ký để nhận mã khôi phục.',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
-                  color: AppColors.textSecondary,
+                  color: const Color(0xFF718076),
                 ),
               ),
               const SizedBox(height: 32),
@@ -77,30 +98,39 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'hau@example.com',
-                  prefixIcon: Icon(Icons.mail_outline_rounded, size: 20, color: AppColors.textMuted),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: const InputDecoration(
+                    hintText: 'hau@example.com',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
 
               Row(
                 children: [
-                  const Icon(Icons.info_outline_rounded, size: 15, color: AppColors.textMuted),
+                  const Icon(Icons.info_outline_rounded, size: 15, color: Color(0xFF718076)),
                   const SizedBox(width: 6),
                   Text(
                     'Mã khôi phục có hiệu lực trong 5 phút.',
                     style: GoogleFonts.beVietnamPro(
                       fontSize: 12,
-                      color: AppColors.textMuted,
+                      color: const Color(0xFF718076),
                     ),
                   ),
                 ],
@@ -110,29 +140,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
               SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 49,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: _onSubmit,
-                  child: const Text('Gửi mã xác thực'),
-                ),
-              ),
-
-              const Spacer(),
-
-              Center(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context),
                   child: Text(
-                    'Quay lại đăng nhập',
+                    'Gửi mã xác thực',
                     style: GoogleFonts.beVietnamPro(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -140,4 +165,3 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
-

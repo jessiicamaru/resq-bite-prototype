@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,30 +16,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       List.generate(6, (i) => TextEditingController(text: '${i + 1}'));
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
-  int _resendCountdown = 45;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer?.cancel();
-    setState(() => _resendCountdown = 45);
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_resendCountdown > 0) {
-        setState(() => _resendCountdown--);
-      } else {
-        timer.cancel();
-      }
-    });
-  }
-
   @override
   void dispose() {
-    _timer?.cancel();
     for (var c in _controllers) {
       c.dispose();
     }
@@ -51,7 +28,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _onVerify() {
-    // Prototype flow: Navigate directly to Home
     Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
   }
 
@@ -60,12 +36,33 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () => Navigator.pop(context),
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.border),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: AppColors.textPrimary,
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        title: const Text('Xác thực tài khoản'),
+        title: Text(
+          'Xác thực tài khoản',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
         child: Padding(
@@ -88,7 +85,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 6),
@@ -96,41 +93,48 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 'Nhập mã 6 số được gửi đến email của bạn.',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
-                  color: AppColors.textSecondary,
+                  color: const Color(0xFF718076),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
+
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight.withValues(alpha: 0.6),
+                  color: const Color(0xFFEDF2E7),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.mark_email_read_outlined, size: 16, color: AppColors.primary),
+                    const Icon(Icons.mail_outline_rounded, size: 16, color: Color(0xFF12543B)),
                     const SizedBox(width: 8),
                     Text(
                       'Đã gửi mã đến ${widget.email}',
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        color: const Color(0xFF12543B),
                       ),
                     ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 36),
 
-              // 6 Digit boxes
+              // 6 Digit boxes matching Figma C08
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(6, (index) {
-                  return SizedBox(
-                    width: 48,
-                    height: 56,
+                  return Container(
+                    width: 46,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFE4E9E1), width: 1.5),
+                    ),
                     child: TextField(
                       controller: _controllers[index],
                       focusNode: _focusNodes[index],
@@ -140,20 +144,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: const Color(0xFF183B2E),
                       ),
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         counterText: '',
                         contentPadding: EdgeInsets.zero,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.border, width: 1.5),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.primary, width: 2),
-                        ),
+                        border: InputBorder.none,
                       ),
                       onChanged: (val) {
                         if (val.isNotEmpty && index < 5) {
@@ -170,35 +167,43 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               const SizedBox(height: 24),
 
               Center(
-                child: _resendCountdown > 0
-                    ? Text(
-                        'Gửi lại mã sau ${_resendCountdown}s',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
-                        ),
-                      )
-                    : TextButton(
-                        onPressed: _startTimer,
-                        child: Text(
-                          'Gửi lại mã',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
+                child: TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Mã xác thực mới đã được gửi!')),
+                    );
+                  },
+                  child: Text(
+                    'Gửi lại mã',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF12543B),
+                    ),
+                  ),
+                ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
               SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 49,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: _onVerify,
-                  child: const Text('Xác nhận & Vào ứng dụng'),
+                  child: Text(
+                    'Xác nhận',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -208,4 +213,3 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 }
-

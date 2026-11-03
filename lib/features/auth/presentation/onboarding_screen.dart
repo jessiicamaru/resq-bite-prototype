@@ -14,30 +14,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   late final PageController _pageController;
   int _currentPage = 0;
 
-  final List<Map<String, dynamic>> _slides = [
+  final List<Map<String, String>> _slides = [
     {
+      'code': 'C02',
+      'image': 'assets/screens/hero_c02.png',
       'title': 'Bữa ngon, giá nhẹ',
-      'description': 'Đồ ăn cuối ngày đạt chuẩn chất lượng vẫn có thể trở thành một bữa ngon với giá giảm 50% – 70%.',
-      'icon': Icons.savings_outlined,
-      'badge': 'TIẾT KIỆM ĐẾN 70%',
-      'sdgTag': 'SDG 2: Zero Hunger',
-      'color': Color(0xFFE5EFDA),
+      'subtitle': 'Đồ ăn cuối ngày vẫn có thể trở thành một bữa ngon.',
+      'btn': 'Tiếp tục',
     },
     {
+      'code': 'C03',
+      'image': 'assets/screens/hero_c03.png',
       'title': 'Một túi bất ngờ',
-      'description': 'Mô hình Túi Bí Mật (Mystery Bag): Biết trước danh mục nhưng ngẫu nhiên món ngon, tiết kiệm chi phí bao bì.',
-      'icon': Icons.card_giftcard_outlined,
-      'badge': 'MYSTERY RESCUE BAG',
-      'sdgTag': 'SDG 12: Tiêu dùng bền vững',
-      'color': Color(0xFFF3E8FF),
+      'subtitle': 'Biết danh mục, bất ngờ với món ngon bên trong.',
+      'btn': 'Tiếp tục',
     },
     {
+      'code': 'C04',
+      'image': 'assets/screens/hero_c04.png',
       'title': 'Đến nhận, cứu một bữa',
-      'description': 'Đặt trước trên app. Đến đúng khung giờ vàng (20:00–22:30). Xuất trình mã QR nhận đồ ăn trong 5–10 giây.',
-      'icon': Icons.qr_code_scanner_rounded,
-      'badge': 'PICK-UP QR CODE',
-      'sdgTag': 'Không lo chi phí ship',
-      'color': Color(0xFFE0F2FE),
+      'subtitle': 'Đặt trước. Đến đúng giờ. Đưa mã QR tại quầy.',
+      'btn': 'Khám phá ngay',
     },
   ];
 
@@ -72,24 +69,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Topbar
+            // Topbar matching Figma C02-C04
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 children: [
-                  if (_currentPage > 0)
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 16),
                       color: AppColors.textPrimary,
                       onPressed: () {
-                        _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
+                        if (_currentPage > 0) {
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          Navigator.pushReplacementNamed(context, '/splash');
+                        }
                       },
-                    )
-                  else
-                    const SizedBox(width: 48),
+                    ),
+                  ),
                   const Spacer(),
                   Text(
                     'Chào mừng đến ResQ Bites',
@@ -105,7 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Text(
                       'Bỏ qua',
                       style: GoogleFonts.beVietnamPro(
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textSecondary,
                       ),
@@ -115,83 +123,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
 
-            // PageView
+            // PageView Content
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                onPageChanged: (index) => setState(() => _currentPage = index),
                 itemCount: _slides.length,
+                onPageChanged: (page) => setState(() => _currentPage = page),
                 itemBuilder: (context, index) {
                   final slide = _slides[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        const SizedBox(height: 16),
-                        // Visual box
-                        Container(
-                          height: 280,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: slide['color'],
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Positioned(
-                                top: 16,
-                                right: 16,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withValues(alpha: 0.05),
-                                        blurRadius: 4,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    slide['sdgTag'],
-                                    style: GoogleFonts.beVietnamPro(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.primary.withValues(alpha: 0.3),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  slide['icon'],
-                                  color: Colors.white,
-                                  size: 48,
-                                ),
-                              ),
-                            ],
+                        const SizedBox(height: 8),
+
+                        // Hero Photo
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.asset(
+                            slide['image']!,
+                            height: 280,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              height: 280,
+                              color: AppColors.primaryLight,
+                              child: const Icon(Icons.fastfood_rounded, size: 64, color: AppColors.primary),
+                            ),
                           ),
                         ),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 24),
 
-                        // Logo mark
+                        // Logo Mark: resq bites.
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -200,7 +164,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               style: GoogleFonts.beVietnamPro(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
+                                color: const Color(0xFF183B2E),
+                                letterSpacing: -0.5,
                               ),
                             ),
                             Text(
@@ -208,78 +173,78 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               style: GoogleFonts.beVietnamPro(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
+                                color: const Color(0xFF80A05B),
+                                letterSpacing: -0.5,
                               ),
                             ),
                           ],
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
 
+                        // Title
                         Text(
-                          slide['title'],
+                          slide['title']!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.beVietnamPro(
                             fontSize: 26,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
+                            color: const Color(0xFF183B2E),
+                            height: 1.25,
                           ),
                         ),
 
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
 
+                        // Subtitle
                         Text(
-                          slide['description'],
+                          slide['subtitle']!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.beVietnamPro(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
-                            height: 1.45,
+                            fontSize: 12,
+                            color: const Color(0xFF718076),
                           ),
                         ),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
 
-                        // Animated Dots
+                        // Dots matching Figma
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(3, (dotIndex) {
                             final isActive = dotIndex == _currentPage;
-                            return AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              height: 6,
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 3),
                               width: isActive ? 24 : 6,
+                              height: 6,
                               decoration: BoxDecoration(
-                                color: isActive
-                                    ? AppColors.primary
-                                    : AppColors.primary.withValues(alpha: 0.2),
+                                color: isActive ? const Color(0xFF12543B) : const Color(0xFFD0DCC6),
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             );
                           }),
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
 
-                        // Badge
+                        // Badge: TIẾT KIỆM ĐẾN 70%
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                           decoration: BoxDecoration(
-                            color: AppColors.badgeBg,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                            color: const Color(0xFFEAF3DD),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
-                            slide['badge'],
+                            'TIẾT KIỆM ĐẾN 70%',
                             style: GoogleFonts.beVietnamPro(
-                              fontSize: 10,
+                              fontSize: 9,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                              color: const Color(0xFF12543B),
                               letterSpacing: 0.8,
                             ),
                           ),
                         ),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   );
@@ -287,16 +252,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
 
-            // Bottom CTA
-            Padding(
-              padding: const EdgeInsets.all(24),
+            // Sticky Bottom CTA container matching Figma
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(color: Color(0xFFE4E9E1)),
+                ),
+              ),
               child: SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 49,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: _onNext,
                   child: Text(
-                    _currentPage == _slides.length - 1 ? 'Khám phá ngay' : 'Tiếp tục',
+                    _slides[_currentPage]['btn']!,
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -307,4 +288,3 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 }
-

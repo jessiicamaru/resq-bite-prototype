@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController(text: 'hau@example.com');
-  final _passwordController = TextEditingController();
+  final _passwordController = TextEditingController(text: '12345678');
   bool _obscurePassword = true;
   bool _rememberMe = true;
 
@@ -31,18 +31,39 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.pushReplacementNamed(context, '/onboarding');
-            }
-          },
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.border),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: AppColors.textPrimary,
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushReplacementNamed(context, '/onboarding');
+              }
+            },
+          ),
         ),
-        title: const Text('Chào bạn trở lại'),
+        title: Text(
+          'Chào bạn trở lại',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,65 +86,83 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 6),
               Text(
-                'Đăng nhập để tiếp tục hành trình giải cứu thực phẩm.',
+                'Đăng nhập để tiếp tục hành trình giải cứu.',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
-                  color: AppColors.textSecondary,
+                  color: const Color(0xFF718076),
                 ),
               ),
               const SizedBox(height: 32),
 
-              // Email
+              // Email Field
               Text(
                 'Email',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'hau@example.com',
-                  prefixIcon: Icon(Icons.mail_outline_rounded, size: 20, color: AppColors.textMuted),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: const InputDecoration(
+                    hintText: 'hau@example.com',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                 ),
               ),
 
               const SizedBox(height: 20),
 
-              // Password
+              // Password Field
               Text(
                 'Mật khẩu',
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: const Color(0xFF183B2E),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  hintText: 'Nhập mật khẩu',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20, color: AppColors.textMuted),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                      size: 20,
-                      color: AppColors.textMuted,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  style: GoogleFonts.beVietnamPro(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: InputDecoration(
+                    hintText: 'Nhập mật khẩu',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        size: 20,
+                        color: const Color(0xFF718076),
+                      ),
+                      onPressed: () {
+                        setState(() => _obscurePassword = !_obscurePassword);
+                      },
                     ),
-                    onPressed: () {
-                      setState(() => _obscurePassword = !_obscurePassword);
-                    },
                   ),
                 ),
               ),
@@ -134,12 +173,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   SizedBox(
-                    height: 24,
-                    width: 24,
+                    height: 20,
+                    width: 20,
                     child: Checkbox(
                       value: _rememberMe,
-                      activeColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      activeColor: const Color(0xFF12543B),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                      side: const BorderSide(color: Color(0xFFD9D9D9), width: 1.5),
                       onChanged: (val) => setState(() => _rememberMe = val ?? false),
                     ),
                   ),
@@ -150,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Ghi nhớ đăng nhập',
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: const Color(0xFF718076),
                       ),
                     ),
                   ),
@@ -162,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        color: const Color(0xFF12543B),
                       ),
                     ),
                   ),
@@ -171,85 +211,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 28),
 
+              // Login Button
               SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 49,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
                   onPressed: _onLogin,
-                  child: const Text('Đăng nhập'),
+                  child: Text(
+                    'Đăng nhập',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Divider
-              Row(
-                children: [
-                  const Expanded(child: Divider(color: AppColors.border)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'hoặc',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 12,
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                  ),
-                  const Expanded(child: Divider(color: AppColors.border)),
-                ],
-              ),
+              const Divider(color: Color(0xFFE4E9E1), thickness: 1),
 
               const SizedBox(height: 24),
 
-              // Social Logins
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
-                      label: Text(
-                        'Google',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: AppColors.border),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.apple_rounded, size: 24),
-                      label: Text(
-                        'Apple',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: AppColors.border),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 36),
-
-              // Register Row
+              // Footer: Chưa có tài khoản? Đăng ký
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -257,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Chưa có tài khoản? ',
                     style: GoogleFonts.beVietnamPro(
                       fontSize: 13,
-                      color: AppColors.textSecondary,
+                      color: const Color(0xFF718076),
                     ),
                   ),
                   GestureDetector(
@@ -267,7 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
+                        color: const Color(0xFF12543B),
                       ),
                     ),
                   ),
@@ -280,4 +270,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
