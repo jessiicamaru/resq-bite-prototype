@@ -51,10 +51,16 @@ import 'features/consumer/store/presentation/store_reviews_screen.dart';
 import 'features/merchant/auth/presentation/merchant_onboarding_screen.dart';
 import 'features/merchant/auth/presentation/merchant_register_screen.dart';
 import 'features/merchant/auth/presentation/merchant_verification_screen.dart';
+import 'features/merchant/bags/presentation/merchant_bag_ingredients_screen.dart';
 import 'features/merchant/bags/presentation/merchant_bag_list_screen.dart';
+import 'features/merchant/bags/presentation/merchant_bag_price_screen.dart';
+import 'features/merchant/bags/presentation/merchant_bag_quantity_screen.dart';
 import 'features/merchant/bags/presentation/merchant_create_bag_screen.dart';
 import 'features/merchant/bags/presentation/merchant_pickup_window_screen.dart';
+import 'features/merchant/dashboard/presentation/merchant_activities_screen.dart';
+import 'features/merchant/dashboard/presentation/merchant_closing_shift_screen.dart';
 import 'features/merchant/dashboard/presentation/merchant_dashboard_screen.dart';
+import 'features/merchant/dashboard/presentation/merchant_tasks_screen.dart';
 import 'features/merchant/navigation/merchant_main_nav_screen.dart';
 import 'features/merchant/orders/presentation/merchant_orders_pending_screen.dart';
 import 'features/merchant/reports/presentation/merchant_food_waste_report_screen.dart';
@@ -258,8 +264,20 @@ class ResQBitesApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const MerchantBagListScreen());
           case '/merchant-create-bag':
             return MaterialPageRoute(builder: (_) => const MerchantCreateBagScreen());
+          case '/merchant-bag-price':
+            return MaterialPageRoute(builder: (_) => const MerchantBagPriceScreen());
           case '/merchant-pickup-window':
             return MaterialPageRoute(builder: (_) => const MerchantPickupWindowScreen());
+          case '/merchant-bag-quantity':
+            return MaterialPageRoute(builder: (_) => const MerchantBagQuantityScreen());
+          case '/merchant-bag-ingredients':
+            return MaterialPageRoute(builder: (_) => const MerchantBagIngredientsScreen());
+          case '/merchant-tasks':
+            return MaterialPageRoute(builder: (_) => const MerchantTasksScreen());
+          case '/merchant-activities':
+            return MaterialPageRoute(builder: (_) => const MerchantActivitiesScreen());
+          case '/merchant-closing-shift':
+            return MaterialPageRoute(builder: (_) => const MerchantClosingShiftScreen());
           case '/merchant-scanner':
             return MaterialPageRoute(builder: (_) => const MerchantQrScannerScreen());
           case '/merchant-qr-valid':

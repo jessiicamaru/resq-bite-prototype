@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../data/store/merchant_store.dart';
 
 class MerchantCreateBagScreen extends StatefulWidget {
   const MerchantCreateBagScreen({super.key});
@@ -23,7 +24,13 @@ class _MerchantCreateBagScreenState extends State<MerchantCreateBagScreen> {
   }
 
   void _onContinue() {
-    Navigator.pushNamed(context, '/merchant-pickup-window');
+    final store = MerchantStore.instance;
+    store.updateDraftBag(store.draftBag.copyWith(
+      title: _titleController.text.trim(),
+      category: _categoryController.text.trim(),
+      description: _descController.text.trim(),
+    ));
+    Navigator.pushNamed(context, '/merchant-bag-price');
   }
 
   @override

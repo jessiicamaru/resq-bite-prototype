@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../data/store/merchant_store.dart';
 
 class MerchantPickupWindowScreen extends StatefulWidget {
   const MerchantPickupWindowScreen({super.key});
@@ -25,10 +26,14 @@ class _MerchantPickupWindowScreenState extends State<MerchantPickupWindowScreen>
   }
 
   void _onSave() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Đã cập nhật khung giờ nhận hàng thành công!')),
-    );
-    Navigator.pushReplacementNamed(context, '/merchant-bag-list');
+    final store = MerchantStore.instance;
+    store.updateDraftBag(store.draftBag.copyWith(
+      pickupDate: _dateController.text.trim(),
+      startTime: _startTimeController.text.trim(),
+      endTime: _endTimeController.text.trim(),
+      closeTime: _closeTimeController.text.trim(),
+    ));
+    Navigator.pushNamed(context, '/merchant-bag-quantity');
   }
 
   @override
