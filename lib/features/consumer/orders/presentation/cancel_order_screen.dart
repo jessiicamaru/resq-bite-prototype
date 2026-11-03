@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/models/food_bag.dart';
+import '../../../../data/store/order_store.dart';
 
 class CancelOrderScreen extends StatefulWidget {
-  final MysteryBag bag;
+  final MysteryBag? bag;
   final String orderCode;
 
   const CancelOrderScreen({
     super.key,
-    required this.bag,
+    this.bag,
     this.orderCode = 'RB-1024',
   });
 
@@ -18,340 +19,258 @@ class CancelOrderScreen extends StatefulWidget {
 }
 
 class _CancelOrderScreenState extends State<CancelOrderScreen> {
-  String _selectedReason = 'Không thể đến đúng giờ nhận hàng';
+  String _selectedReason = 'Không thể đến đúng giờ';
+  final TextEditingController _notesController = TextEditingController();
 
   final List<String> _reasons = [
-    'Không thể đến đúng giờ nhận hàng',
-    'Đặt nhầm địa chỉ hoặc số lượng túi',
-    'Cửa hàng thông báo thay đổi đột xuất',
-    'Đổi kế hoạch ăn tối cá nhân',
+    'Không thể đến đúng giờ',
+    'Đặt nhầm túi',
     'Lý do khác',
+    'Hoàn tiền chỉ xác nhận sau khi xử lý.',
   ];
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ecoIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.forestGreen),
-          onPressed: () => Navigator.pop(context),
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         title: Text(
           'Bạn muốn hủy đơn?',
           style: GoogleFonts.beVietnamPro(
-            color: AppColors.forestGreen,
+            fontSize: 15,
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            color: const Color(0xFF183B2E),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Warning banner
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF4E5),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFFFD599)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.warning_amber_rounded, color: Color(0xFFD97706), size: 24),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'MỖI BỮA ĂN ĐỀU ĐÁNG GIÁ',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFFB45309),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Yêu cầu hủy được xét theo trạng thái đơn. Nếu hủy trước khung giờ nhận 30 phút, bạn sẽ được hoàn 100% tiền.',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 13,
-                            color: const Color(0xFF92400E),
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Order info
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      widget.bag.imageUrl,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.grey.shade200,
-                        child: const Icon(Icons.fastfood, color: Colors.grey),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'MỖI BỮA ĂN ĐỀU ĐÁNG GIÁ',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF63834D),
+                        letterSpacing: 0.8,
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.orderCode,
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.forestGreen,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          widget.bag.title,
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.charcoal,
-                          ),
-                        ),
-                        Text(
-                          widget.bag.storeName,
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 13,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 4),
+                    Text(
+                      'Bạn muốn hủy đơn?',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Yêu cầu hủy sẽ được xét theo chính sách của đơn.',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
 
-            // Reasons
-            Text(
-              'Chọn lý do hủy đơn',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.forestGreen,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                children: _reasons.map((reason) {
-                  final isSelected = _selectedReason == reason;
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        _selectedReason = reason;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    // Peach Warning Card
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF3E8),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFFFE0C2)),
+                      ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                            color: isSelected ? AppColors.forestGreen : Colors.grey.shade400,
-                            size: 20,
-                          ),
+                          const Icon(Icons.warning_amber_rounded, color: Color(0xFF8F4C17), size: 24),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              reason,
+                              'Yêu cầu hủy được xét theo trạng thái đơn, không tự động cam kết hoàn tiền.',
                               style: GoogleFonts.beVietnamPro(
-                                fontSize: 14,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                color: isSelected ? AppColors.forestGreen : AppColors.charcoal,
+                                fontSize: 12,
+                                color: const Color(0xFF8F4C17),
+                                height: 1.4,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 24),
 
-            // Refund timeline preview (C73)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.account_balance_wallet_outlined, color: AppColors.forestGreen, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Tiến trình hoàn tiền dự kiến',
+                    const SizedBox(height: 18),
+
+                    // Cancellation reason options
+                    ..._reasons.map((reason) {
+                      final isSelected = _selectedReason == reason;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: InkWell(
+                          onTap: () => setState(() => _selectedReason = reason),
+                          borderRadius: BorderRadius.circular(16),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: isSelected ? const Color(0xFF12543B) : const Color(0xFFE4E9E1),
+                                width: isSelected ? 1.5 : 1.0,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: isSelected ? const Color(0xFF12543B) : const Color(0xFFD4DDD6),
+                                      width: isSelected ? 6 : 1.5,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Text(
+                                    reason,
+                                    style: GoogleFonts.beVietnamPro(
+                                      fontSize: 13,
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                      color: const Color(0xFF183B2E),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+
+                    const SizedBox(height: 8),
+
+                    // Ghi chú thêm
+                    Text(
+                      'Ghi chú thêm',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      child: TextField(
+                        controller: _notesController,
+                        maxLines: 4,
+                        minLines: 3,
                         style: GoogleFonts.beVietnamPro(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.forestGreen,
+                          fontSize: 13,
+                          color: const Color(0xFF183B2E),
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Mô tả lý do...',
+                          hintStyle: GoogleFonts.beVietnamPro(
+                            fontSize: 13,
+                            color: const Color(0xFF718076),
+                          ),
+                          border: InputBorder.none,
+                          isDense: true,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Số tiền hoàn: 35.000đ sẽ được chuyển về Ví MoMo đã thanh toán.',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 13,
-                      color: Colors.grey.shade700,
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Thời gian hoàn tất: Trong vòng 12 - 24 giờ sau khi hệ thống xác nhận hủy.',
-                    style: GoogleFonts.beVietnamPro(
-                      fontSize: 12,
-                      color: Colors.grey.shade500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
 
-            // Confirm buttons
-            ElevatedButton(
-              onPressed: () {
-                _showRefundProcessedDialog(context);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                backgroundColor: const Color(0xFFDC2626),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              child: Text(
-                'Xác nhận hủy đơn hàng',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () => Navigator.pop(context),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                side: const BorderSide(color: Colors.grey),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              ),
-              child: Text(
-                'Giữ lại đơn hàng này',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.charcoal,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  void _showRefundProcessedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+            // Sticky Bottom CTA: Gửi yêu cầu hủy
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.orange.shade50,
-                shape: BoxShape.circle,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
               ),
-              child: const Icon(Icons.check_circle_outline, color: Color(0xFFD97706), size: 48),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Đã tiếp nhận yêu cầu hủy',
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: AppColors.charcoal,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Đơn hàng ${widget.orderCode} đã được hủy. Số tiền 35.000đ đang được tiến hành hoàn về tài khoản của bạn.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 13,
-                color: Colors.grey.shade700,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.forestGreen,
-                minimumSize: const Size.fromHeight(44),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              child: Text(
-                'Về danh sách đơn',
-                style: GoogleFonts.beVietnamPro(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
+              child: SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFA23F2A),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: () {
+                    // Cập nhật State trong OrderStore
+                    OrderStore.instance.requestCancel(
+                      widget.orderCode,
+                      reason: _selectedReason,
+                      notes: _notesController.text,
+                    );
+
+                    // Chuyển sang màn C43: Đã tiếp nhận yêu cầu
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/cancel-requested',
+                      arguments: {
+                        'orderCode': widget.orderCode,
+                      },
+                    );
+                  },
+                  child: Text(
+                    'Gửi yêu cầu hủy',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -361,4 +280,3 @@ class _CancelOrderScreenState extends State<CancelOrderScreen> {
     );
   }
 }
-

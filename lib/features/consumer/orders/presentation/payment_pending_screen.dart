@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/models/food_bag.dart';
+import '../../../../data/store/order_store.dart';
 
 class PaymentPendingScreen extends StatelessWidget {
   final MysteryBag bag;
@@ -222,7 +223,14 @@ class PaymentPendingScreen extends StatelessWidget {
                               elevation: 0,
                             ),
                             onPressed: () {
-                              // BƯỚC TIẾP THEO: Thanh toán thành công (Image 11)
+                              // Cập nhật State trong OrderStore thực tế
+                              OrderStore.instance.placeOrder(
+                                bag: bag,
+                                quantity: quantity,
+                                paymentMethod: payment,
+                              );
+
+                              // BƯỚC TIẾP THEO: Thanh toán thành công (Image 11 - C37)
                               Navigator.pushReplacementNamed(
                                 context,
                                 '/payment-success',
@@ -255,11 +263,14 @@ class PaymentPendingScreen extends StatelessWidget {
                               elevation: 0,
                             ),
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Mô phỏng thất bại: Thanh toán không thành công. Vui lòng thử lại!'),
-                                  backgroundColor: Color(0xFF8F4C17),
-                                ),
+                              // TRƯỜNG HỢP THANH TOÁN CHƯA THÀNH CÔNG (Image C36)
+                              Navigator.pushNamed(
+                                context,
+                                '/payment-failed',
+                                arguments: {
+                                  'bag': bag,
+                                  'quantity': quantity,
+                                },
                               );
                             },
                             child: Text(

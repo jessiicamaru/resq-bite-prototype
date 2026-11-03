@@ -33,14 +33,20 @@ import 'features/consumer/orders/presentation/order_qr_pickup_screen.dart';
 import 'features/consumer/orders/presentation/order_receipt_screen.dart';
 import 'features/consumer/orders/presentation/order_review_screen.dart';
 import 'features/consumer/orders/presentation/orders_history_screen.dart';
+import 'features/consumer/orders/presentation/payment_failed_screen.dart';
 import 'features/consumer/orders/presentation/payment_methods_screen.dart';
 import 'features/consumer/orders/presentation/payment_pending_screen.dart';
 import 'features/consumer/orders/presentation/payment_success_screen.dart';
 import 'features/consumer/profile/presentation/consumer_profile_screen.dart';
+import 'features/consumer/profile/presentation/green_collection_screen.dart';
 import 'features/consumer/profile/presentation/help_center_screen.dart';
 import 'features/consumer/profile/presentation/notifications_screen.dart';
+import 'features/consumer/profile/presentation/personal_info_screen.dart';
 import 'features/consumer/profile/presentation/saved_addresses_screen.dart';
 import 'features/consumer/profile/presentation/support_request_screen.dart';
+import 'features/consumer/profile/presentation/support_success_screen.dart';
+import 'features/consumer/profile/presentation/wallet_methods_screen.dart';
+import 'features/consumer/orders/presentation/cancel_requested_screen.dart';
 import 'features/consumer/store/presentation/store_detail_screen.dart';
 import 'features/consumer/store/presentation/store_reviews_screen.dart';
 
@@ -175,6 +181,13 @@ class ResQBitesApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => PaymentPendingScreen(bag: bag, quantity: qty, payment: payment),
             );
+          case '/payment-failed':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
+            final qty = (args?['quantity'] as int?) ?? 1;
+            return MaterialPageRoute(
+              builder: (_) => PaymentFailedScreen(bag: bag, quantity: qty),
+            );
           case '/payment-success':
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
@@ -190,31 +203,48 @@ class ResQBitesApp extends StatelessWidget {
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
             final qty = (args?['quantity'] as int?) ?? 1;
-            final code = (args?['orderCode'] as String?) ?? 'RESQ-8942-DN';
+            final code = (args?['orderCode'] as String?) ?? 'RB-1024';
             return MaterialPageRoute(builder: (_) => OrderReceiptScreen(bag: bag, quantity: qty, orderCode: code));
           case '/orders-history':
             return MaterialPageRoute(builder: (_) => const OrdersHistoryScreen());
           case '/cancel-order':
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
-            final code = (args?['orderCode'] as String?) ?? 'RESQ-8942-DN';
+            final code = (args?['orderCode'] as String?) ?? 'RB-1024';
             return MaterialPageRoute(builder: (_) => CancelOrderScreen(bag: bag, orderCode: code));
+          case '/cancel-requested':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final code = (args?['orderCode'] as String?) ?? 'RB-1024';
+            return MaterialPageRoute(builder: (_) => CancelRequestedScreen(orderCode: code));
           case '/order-review':
-            final bag = (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
-            return MaterialPageRoute(builder: (_) => OrderReviewScreen(bag: bag));
+            final args = settings.arguments as Map<String, dynamic>?;
+            final bag = (args?['bag'] as MysteryBag?) ?? (settings.arguments as MysteryBag?) ?? mockMysteryBags.first;
+            final code = (args?['orderCode'] as String?) ?? 'RB-1024';
+            return MaterialPageRoute(builder: (_) => OrderReviewScreen(bag: bag, orderCode: code));
           case '/green-impact':
             return MaterialPageRoute(builder: (_) => const GreenImpactScreen());
+          case '/green-collection':
+            return MaterialPageRoute(builder: (_) => const GreenCollectionScreen());
           case '/consumer-profile':
             return MaterialPageRoute(builder: (_) => const ConsumerProfileScreen());
+          case '/personal-info':
+            return MaterialPageRoute(builder: (_) => const PersonalInfoScreen());
           case '/notifications':
             return MaterialPageRoute(builder: (_) => const NotificationsScreen());
           case '/saved-addresses':
             return MaterialPageRoute(builder: (_) => const SavedAddressesScreen());
+          case '/wallet-methods':
+            return MaterialPageRoute(builder: (_) => const WalletMethodsScreen());
           case '/help-center':
             return MaterialPageRoute(builder: (_) => const HelpCenterScreen());
           case '/support-request':
-            final code = settings.arguments as String?;
+            final args = settings.arguments as Map<String, dynamic>?;
+            final code = (args?['initialOrderCode'] as String?) ?? (settings.arguments as String?);
             return MaterialPageRoute(builder: (_) => SupportRequestScreen(initialOrderCode: code));
+          case '/support-success':
+            final args = settings.arguments as Map<String, dynamic>?;
+            final code = (args?['orderCode'] as String?) ?? 'RB-1024';
+            return MaterialPageRoute(builder: (_) => SupportSuccessScreen(orderCode: code));
 
           // --- MERCHANT FLOW ---
           case '/merchant-onboarding':

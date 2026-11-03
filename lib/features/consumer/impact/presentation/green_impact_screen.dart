@@ -1,317 +1,338 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../data/mock/mock_data.dart';
 
 class GreenImpactScreen extends StatelessWidget {
   const GreenImpactScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat('#,###', 'vi_VN');
-    final impact = mockUserImpact;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () => Navigator.pop(context),
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
+          ),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        title: const Text('Bảng Thành Tích Xanh'),
+        title: Text(
+          'Dấu chân xanh của bạn',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hero Badge
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF183B2E), Color(0xFF12543B)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.military_tech_rounded, color: AppColors.star, size: 42),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      impact.ambassadorRank,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Thành viên tích cực cùng ResQ Bites',
-                      style: GoogleFonts.beVietnamPro(
-                        fontSize: 12,
-                        color: Colors.white70,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Text(
-                'TÁC ĐỘNG TÍCH CỰC CỦA BẠN',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                  letterSpacing: 1.0,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Mỗi bữa ăn cứu được là một điều tốt',
-                style: GoogleFonts.beVietnamPro(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // 3 Big Impact Stat Cards
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildMetricCard(
-                      icon: Icons.dinner_dining_rounded,
-                      color: AppColors.primary,
-                      title: '${impact.rescuedMeals} bữa',
-                      subtitle: 'Đã giải cứu',
-                      badge: 'SDG 2',
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildMetricCard(
-                      icon: Icons.savings_rounded,
-                      color: AppColors.sdgGold,
-                      title: '${currencyFormat.format(impact.totalSavedVnd)}đ',
-                      subtitle: 'Tiết kiệm được',
-                      badge: 'Ví tiền',
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              _buildMetricCard(
-                icon: Icons.cloud_done_rounded,
-                color: AppColors.co2Reduction,
-                title: '${impact.co2ReducedKg} kg CO₂',
-                subtitle: 'Lượng phát thải nhà kính đã giảm thiểu (tương đương hấp thụ của 3 cây xanh)',
-                badge: 'SDG 12: Tiêu dùng bền vững',
-                isWide: true,
-              ),
-
-              const SizedBox(height: 24),
-
-              // SDGs Commitment card
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
-                ),
+        bottom: false,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mục tiêu Phát triển Bền vững (SDGs)',
+                      'MỖI BỮA ĂN ĐỀU ĐÁNG GIÁ',
                       style: GoogleFonts.beVietnamPro(
-                        fontSize: 15,
+                        fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: const Color(0xFF63834D),
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Dấu chân xanh của bạn',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Thay đổi bắt đầu từ những bữa ăn nhỏ.',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 12,
+                        color: const Color(0xFF718076),
+                      ),
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    // Big Green Card (C50)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF12543B),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'MỖI LẦN GIẢI CỨU ĐỀU CÓ Ý NGHĨA',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white.withValues(alpha: 0.75),
+                              letterSpacing: 0.8,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                '12',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'túi',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white.withValues(alpha: 0.85),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'đã tìm được người thưởng thức',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 12,
+                              color: Colors.white.withValues(alpha: 0.85),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          const Icon(Icons.eco_outlined, color: Colors.white, size: 22),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    // 2 Stat boxes side by side (C50)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFFE4E9E1)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Bạn đã tiết kiệm',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 11,
+                                    color: const Color(0xFF718076),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '780k',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF183B2E),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'đồng so với giá gốc',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 11,
+                                    color: const Color(0xFF718076),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFFE4E9E1)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Cửa hàng đồng hành',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 11,
+                                    color: const Color(0xFF718076),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '5',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF183B2E),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'địa điểm bạn đã ghé',
+                                  style: GoogleFonts.beVietnamPro(
+                                    fontSize: 11,
+                                    color: const Color(0xFF718076),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Section: Đều đặn tạo nên thay đổi (C50)
+                    Text(
+                      'Đều đặn tạo nên thay đổi',
+                      style: GoogleFonts.beVietnamPro(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF183B2E),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFDDA63A).withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(12),
+
+                    // Chart Box with green vertical bars
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                _buildBar(heightRatio: 0.15, isLatest: false),
+                                _buildBar(heightRatio: 0.35, isLatest: false),
+                                _buildBar(heightRatio: 0.25, isLatest: false),
+                                _buildBar(heightRatio: 0.65, isLatest: false),
+                                _buildBar(heightRatio: 0.50, isLatest: false),
+                                _buildBar(heightRatio: 0.95, isLatest: false),
+                                _buildBar(heightRatio: 0.80, isLatest: true),
+                              ],
+                            ),
                           ),
-                          child: const Icon(Icons.rice_bowl, color: Color(0xFFDDA63A), size: 24),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'SDG 2: Zero Hunger',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                              Text(
-                                'Tăng khả năng tiếp cận bữa ăn chất lượng với chi phí rẻ.',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 14),
-                    const Divider(color: AppColors.divider),
-                    const SizedBox(height: 14),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFBF8B2E).withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.recycling_rounded, color: Color(0xFFBF8B2E), size: 24),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'SDG 12: Tiêu dùng có trách nhiệm',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                              Text(
-                                'Giảm thất thoát và lãng phí thực phẩm tại chuỗi F&B địa phương.',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 24),
-
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Tiếp tục giải cứu thực phẩm'),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-            ],
-          ),
+            _buildBottomNav(context),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildMetricCard({
-    required IconData icon,
-    required Color color,
-    required String title,
-    required String subtitle,
-    required String badge,
-    bool isWide = false,
-  }) {
+  Widget _buildBar({required double heightRatio, required bool isLatest}) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: 18,
+      height: 100 * heightRatio,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        color: isLatest ? const Color(0xFF12543B) : const Color(0xFF8FB37B),
+        borderRadius: BorderRadius.circular(6),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _buildBottomNav(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: color, size: 22),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  badge,
-                  style: GoogleFonts.beVietnamPro(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
+          _navItem(context, 0, Icons.home_outlined, 'Khám phá', false, () {
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
+          }),
+          _navItem(context, 1, Icons.map_outlined, 'Bản đồ', false, () {
+            Navigator.pushNamed(context, '/map-explorer');
+          }),
+          _navItem(context, 2, Icons.shopping_bag_outlined, 'Đơn hàng', false, () {
+            Navigator.pushNamed(context, '/orders-history');
+          }),
+          _navItem(context, 3, Icons.person, 'Tài khoản', true, () {}),
+        ],
+      ),
+    );
+  }
+
+  Widget _navItem(BuildContext context, int index, IconData icon, String label, bool isSelected, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
+            size: 22,
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 2),
           Text(
-            title,
+            label,
             style: GoogleFonts.beVietnamPro(
-              fontSize: isWide ? 22 : 18,
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            subtitle,
-            style: GoogleFonts.beVietnamPro(
-              fontSize: 11,
-              color: AppColors.textSecondary,
-              height: 1.3,
+              fontSize: 10,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
             ),
           ),
         ],
@@ -319,4 +340,3 @@ class GreenImpactScreen extends StatelessWidget {
     );
   }
 }
-

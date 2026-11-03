@@ -41,6 +41,48 @@ class MysteryBag {
 
   int get discountPercent =>
       (((originalPrice - rescuePrice) / originalPrice) * 100).round();
+
+  MysteryBag copyWith({
+    String? id,
+    String? title,
+    String? storeName,
+    String? storeAddress,
+    String? category,
+    double? distanceKm,
+    double? rating,
+    int? reviewCount,
+    int? rescuePrice,
+    int? originalPrice,
+    String? pickupWindow,
+    String? pickupCountdown,
+    int? remainingBags,
+    String? imageUrl,
+    String? description,
+    List<String>? possibleItems,
+    List<String>? allergyNotice,
+    String? merchantStory,
+  }) {
+    return MysteryBag(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      storeName: storeName ?? this.storeName,
+      storeAddress: storeAddress ?? this.storeAddress,
+      category: category ?? this.category,
+      distanceKm: distanceKm ?? this.distanceKm,
+      rating: rating ?? this.rating,
+      reviewCount: reviewCount ?? this.reviewCount,
+      rescuePrice: rescuePrice ?? this.rescuePrice,
+      originalPrice: originalPrice ?? this.originalPrice,
+      pickupWindow: pickupWindow ?? this.pickupWindow,
+      pickupCountdown: pickupCountdown ?? this.pickupCountdown,
+      remainingBags: remainingBags ?? this.remainingBags,
+      imageUrl: imageUrl ?? this.imageUrl,
+      description: description ?? this.description,
+      possibleItems: possibleItems ?? this.possibleItems,
+      allergyNotice: allergyNotice ?? this.allergyNotice,
+      merchantStory: merchantStory ?? this.merchantStory,
+    );
+  }
 }
 
 class GreenImpact {

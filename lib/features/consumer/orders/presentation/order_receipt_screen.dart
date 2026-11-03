@@ -13,7 +13,7 @@ class OrderReceiptScreen extends StatelessWidget {
     super.key,
     required this.bag,
     this.quantity = 1,
-    this.orderCode = 'RESQ-8942-DN',
+    this.orderCode = 'RB-1024',
   });
 
   @override
@@ -26,155 +26,362 @@ class OrderReceiptScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          color: AppColors.textPrimary,
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Biên Nhận Thanh Toán'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.download_rounded, color: AppColors.primary),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Đã lưu biên lai điện tử PDF về máy!')),
-              );
-            },
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 16),
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFE4E9E1)),
           ),
-        ],
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+            color: const Color(0xFF183B2E),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        title: Text(
+          'Biên nhận thanh toán',
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+        centerTitle: false,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.receipt_rounded, color: AppColors.primary, size: 32),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'HÓA ĐƠN ĐIỆN TỬ',
-                        style: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 1.0),
-                      ),
-                      Text(
-                        '${currencyFormat.format(rescueTotal)}đ',
-                        style: GoogleFonts.beVietnamPro(fontSize: 26, fontWeight: FontWeight.w800, color: AppColors.primary),
-                      ),
-                      Text(
-                        'Thanh toán thành công qua Ví MoMo',
-                        style: GoogleFonts.beVietnamPro(fontSize: 12, color: AppColors.textSecondary),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const Divider(height: 32, color: AppColors.divider),
-
-                _buildReceiptRow('Mã hóa đơn', orderCode),
-                _buildReceiptRow('Thời gian', DateFormat('HH:mm - dd/MM/yyyy').format(DateTime.now())),
-                _buildReceiptRow('Cửa hàng', bag.storeName),
-                _buildReceiptRow('Địa chỉ', bag.storeAddress),
-                _buildReceiptRow('Túi giải cứu', '${bag.title} (x$quantity)'),
-                _buildReceiptRow('Khung giờ đón', bag.pickupWindow),
-
-                const Divider(height: 32, color: AppColors.divider),
-
-                _buildReceiptRow('Giá gốc', '${currencyFormat.format(originalTotal)}đ'),
-                _buildReceiptRow('Giảm giá cứu thực phẩm', '-${currencyFormat.format(savings)}đ', isHighlight: true),
-                _buildReceiptRow('Phí dịch vụ', 'Miễn phí'),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Thực thanh toán',
-                      style: GoogleFonts.beVietnamPro(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                    // Stepper: (1) Kiểm tra ---- (2) Thanh toán ---- (3) Hoàn tất (Step 3 ACTIVE - C44)
+                    _buildStepper(),
+
+                    const SizedBox(height: 20),
+
+                    // Store & Item Card
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            bag.storeName,
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  'assets/images/hero_c01.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: const Color(0xFFEAF3DD),
+                                    child: const Icon(Icons.bakery_dining_rounded, color: Color(0xFF12543B)),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      bag.title,
+                                      style: GoogleFonts.beVietnamPro(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF183B2E),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '$quantity túi · ${currencyFormat.format(bag.rescuePrice)}đ/túi',
+                                      style: GoogleFonts.beVietnamPro(
+                                        fontSize: 12,
+                                        color: const Color(0xFF718076),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${currencyFormat.format(rescueTotal)}đ',
-                      style: GoogleFonts.beVietnamPro(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.primary),
+
+                    const SizedBox(height: 14),
+
+                    // Thời gian & điểm nhận Card
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.access_time_rounded, size: 20, color: Color(0xFF183B2E)),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Thời gian & điểm nhận',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF183B2E),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Hôm nay · ${bag.pickupWindow}',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            bag.storeAddress,
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 12,
+                              color: const Color(0xFF718076),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Quầy bên phải cửa chính',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 12,
+                              color: const Color(0xFF718076),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          InkWell(
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Vào cửa chính Tiệm Bánh Mây, xuất trình mã QR tại quầy thu ngân.')),
+                              );
+                            },
+                            child: Text(
+                              'Xem hướng dẫn nhận →',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF12543B),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+
+                    const SizedBox(height: 14),
+
+                    // Chi tiết thanh toán Card (C44)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Chi tiết thanh toán',
+                            style: GoogleFonts.beVietnamPro(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF183B2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          _buildPriceRow('Giá trị ban đầu', '${currencyFormat.format(originalTotal)}đ', isMuted: true),
+                          const SizedBox(height: 8),
+                          _buildPriceRow('Giá giải cứu × $quantity', '${currencyFormat.format(rescueTotal)}đ', isBold: true),
+                          const SizedBox(height: 8),
+                          _buildPriceRow('Phí nền tảng', '0đ', isMuted: true),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(color: Color(0xFFE4E9E1), height: 1),
+                          ),
+                          _buildPriceRow('Tổng thanh toán', '${currencyFormat.format(rescueTotal)}đ', isLarge: true),
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEBF2EB),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Bạn tiết kiệm ${currencyFormat.format(savings)}đ',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF12543B),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
                   ],
                 ),
-
-                const SizedBox(height: 24),
-
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.eco_rounded, color: AppColors.primary, size: 20),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Đơn hàng này đã giúp giảm 2.4 kg CO₂ phát thải (Mục tiêu SDG 12).',
-                          style: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.primaryDark),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/order-qr',
-                      arguments: {'bag': bag, 'quantity': quantity},
-                    );
-                  },
-                  child: const Text('Xem Vé Lấy Hàng QR'),
-                ),
-              ],
+              ),
             ),
-          ),
+
+            // Sticky Bottom CTA: Về lịch sử (C44)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 49,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF12543B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    elevation: 0,
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/orders-history');
+                  },
+                  child: Text(
+                    'Về lịch sử',
+                    style: GoogleFonts.beVietnamPro(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildReceiptRow(String label, String value, {bool isHighlight = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: GoogleFonts.beVietnamPro(fontSize: 12, color: AppColors.textSecondary)),
-          Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: GoogleFonts.beVietnamPro(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isHighlight ? AppColors.primary : AppColors.textPrimary,
-              ),
+  Widget _buildStepper() {
+    return Row(
+      children: [
+        _buildStepItem(number: '1', label: 'Kiểm tra', isActive: false),
+        Expanded(
+          child: Container(
+            height: 1.5,
+            color: const Color(0xFFD4DDD6),
+            margin: const EdgeInsets.symmetric(horizontal: 6),
+          ),
+        ),
+        _buildStepItem(number: '2', label: 'Thanh toán', isActive: false),
+        Expanded(
+          child: Container(
+            height: 1.5,
+            color: const Color(0xFFD4DDD6),
+            margin: const EdgeInsets.symmetric(horizontal: 6),
+          ),
+        ),
+        _buildStepItem(number: '3', label: 'Hoàn tất', isActive: true),
+      ],
+    );
+  }
+
+  Widget _buildStepItem({required String number, required String label, required bool isActive}) {
+    return Row(
+      children: [
+        Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: isActive ? const Color(0xFF12543B) : const Color(0xFFE4E9E1),
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            number,
+            style: GoogleFonts.beVietnamPro(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: isActive ? Colors.white : const Color(0xFF718076),
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: GoogleFonts.beVietnamPro(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive ? const Color(0xFF12543B) : const Color(0xFF718076),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPriceRow(String label, String value, {bool isBold = false, bool isMuted = false, bool isLarge = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.beVietnamPro(
+            fontSize: isLarge ? 14 : 12,
+            fontWeight: isLarge || isBold ? FontWeight.w700 : FontWeight.w400,
+            color: isMuted ? const Color(0xFF718076) : const Color(0xFF183B2E),
+          ),
+        ),
+        Text(
+          value,
+          style: GoogleFonts.beVietnamPro(
+            fontSize: isLarge ? 15 : 12,
+            fontWeight: isLarge || isBold ? FontWeight.w700 : FontWeight.w400,
+            color: const Color(0xFF183B2E),
+          ),
+        ),
+      ],
     );
   }
 }
