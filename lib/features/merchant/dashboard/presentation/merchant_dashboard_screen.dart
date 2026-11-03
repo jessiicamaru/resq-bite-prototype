@@ -55,53 +55,87 @@ class _MerchantDashboardScreenState extends State<MerchantDashboardScreen> {
                       ),
                     ],
                   ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _isOpen = !_isOpen;
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            _isOpen ? 'Cửa hàng đã bật mở bán túi!' : 'Cửa hàng đã tạm dừng bán túi!',
-                          ),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _isOpen ? AppColors.forestGreen.withValues(alpha: 0.12) : Colors.grey.shade200,
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: _isOpen ? AppColors.forestGreen : Colors.grey.shade400,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: AppColors.forestGreen),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.swap_horiz, color: AppColors.forestGreen, size: 16),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Người mua',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.forestGreen,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _isOpen ? const Color(0xFF16A34A) : Colors.grey,
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _isOpen = !_isOpen;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                _isOpen ? 'Cửa hàng đã bật mở bán túi!' : 'Cửa hàng đã tạm dừng bán túi!',
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: _isOpen ? AppColors.forestGreen.withValues(alpha: 0.12) : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: _isOpen ? AppColors.forestGreen : Colors.grey.shade400,
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            _isOpen ? 'Đang mở bán' : 'Tạm dừng',
-                            style: GoogleFonts.beVietnamPro(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: _isOpen ? AppColors.forestGreen : Colors.grey.shade700,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _isOpen ? const Color(0xFF16A34A) : Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                _isOpen ? 'Mở bán' : 'Tạm dừng',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: _isOpen ? AppColors.forestGreen : Colors.grey.shade700,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),

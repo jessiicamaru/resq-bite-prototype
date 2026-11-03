@@ -79,11 +79,37 @@ class _HomeDiscoverScreenState extends State<HomeDiscoverScreen> {
                         ],
                       ),
                     ),
+                    InkWell(
+                      onTap: () => Navigator.pushNamed(context, '/merchant-home'),
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEF3C7),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: const Color(0xFFFDE68A)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.storefront, color: Color(0xFF92400E), size: 16),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Chủ quán',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF92400E),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
                     IconButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Không có thông báo mới!')),
-                        );
+                        Navigator.pushNamed(context, '/notifications');
                       },
                       icon: const Icon(Icons.notifications_none_rounded, color: AppColors.textPrimary),
                     ),
