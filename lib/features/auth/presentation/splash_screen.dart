@@ -209,9 +209,13 @@ class SplashScreen extends StatelessWidget {
             // Sticky Bottom CTA
             Padding(
               padding: const EdgeInsets.all(24),
-              child: ElevatedButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/onboarding'),
-                child: const Text('Bắt đầu'),
+              child: SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/onboarding'),
+                  child: const Text('Bắt đầu'),
+                ),
               ),
             ),
           ],

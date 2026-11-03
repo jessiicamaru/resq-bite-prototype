@@ -183,9 +183,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               const SizedBox(height: 28),
 
-              ElevatedButton(
-                onPressed: _agreeTerms ? _onRegister : null,
-                child: const Text('Tạo tài khoản'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _agreeTerms ? _onRegister : null,
+                  child: const Text('Tạo tài khoản'),
+                ),
               ),
 
               const SizedBox(height: 28),

@@ -229,6 +229,8 @@ class _MerchantQrScannerScreenState extends State<MerchantQrScannerScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.sdgGold,
                       foregroundColor: AppColors.forestGreenDark,
+                      minimumSize: const Size(80, 42),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: const Text('Xác nhận'),

@@ -290,10 +290,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             // Bottom CTA
             Padding(
               padding: const EdgeInsets.all(24),
-              child: ElevatedButton(
-                onPressed: _onNext,
-                child: Text(
-                  _currentPage == _slides.length - 1 ? 'Khám phá ngay' : 'Tiếp tục',
+              child: SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _onNext,
+                  child: Text(
+                    _currentPage == _slides.length - 1 ? 'Khám phá ngay' : 'Tiếp tục',
+                  ),
                 ),
               ),
             ),

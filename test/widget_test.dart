@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:final_project/core/theme/app_theme.dart';
+import 'package:final_project/features/consumer/profile/presentation/consumer_profile_screen.dart';
+import 'package:final_project/features/merchant/scanner/presentation/merchant_qr_scanner_screen.dart';
 import 'package:final_project/main.dart';
 
 void main() {
@@ -7,18 +11,25 @@ void main() {
     expect(find.text('Chào mừng đến ResQ Bites'), findsOneWidget);
   });
 
-  testWidgets('ConsumerMainNavScreen smoke test', (WidgetTester tester) async {
+  testWidgets('ConsumerProfileScreen layout test - No infinite width assertion', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ResQBitesApp(),
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const ConsumerProfileScreen(),
+      ),
     );
-    // Smoke check that app builds cleanly
-    expect(find.byType(ResQBitesApp), findsOneWidget);
+    expect(find.byType(ConsumerProfileScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
-  testWidgets('MerchantMainNavScreen smoke test', (WidgetTester tester) async {
+  testWidgets('MerchantQrScannerScreen layout test - No unconstrained button assertion', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ResQBitesApp(),
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const MerchantQrScannerScreen(),
+      ),
     );
-    expect(find.byType(ResQBitesApp), findsOneWidget);
+    expect(find.text('Quét mã nhận túi'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

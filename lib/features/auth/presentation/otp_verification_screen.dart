@@ -193,9 +193,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
               const SizedBox(height: 32),
 
-              ElevatedButton(
-                onPressed: _onVerify,
-                child: const Text('Xác nhận & Vào ứng dụng'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _onVerify,
+                  child: const Text('Xác nhận & Vào ứng dụng'),
+                ),
               ),
             ],
           ),

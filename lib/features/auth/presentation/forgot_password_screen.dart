@@ -108,9 +108,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
               const SizedBox(height: 32),
 
-              ElevatedButton(
-                onPressed: _onSubmit,
-                child: const Text('Gửi mã xác thực'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _onSubmit,
+                  child: const Text('Gửi mã xác thực'),
+                ),
               ),
 
               const Spacer(),

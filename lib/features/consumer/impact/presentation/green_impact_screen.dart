@@ -233,9 +233,13 @@ class GreenImpactScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Tiếp tục giải cứu thực phẩm'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Tiếp tục giải cứu thực phẩm'),
+                ),
               ),
 
               const SizedBox(height: 30),

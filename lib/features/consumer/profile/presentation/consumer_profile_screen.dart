@@ -180,7 +180,8 @@ class ConsumerProfileScreen extends StatelessWidget {
                     onPressed: () => Navigator.pushNamed(context, '/merchant-home'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.forestGreen,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      minimumSize: const Size(56, 36),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: Text('Vào', style: GoogleFonts.beVietnamPro(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)),

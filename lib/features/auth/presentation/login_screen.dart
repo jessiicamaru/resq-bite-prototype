@@ -171,9 +171,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 28),
 
-              ElevatedButton(
-                onPressed: _onLogin,
-                child: const Text('Đăng nhập'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _onLogin,
+                  child: const Text('Đăng nhập'),
+                ),
               ),
 
               const SizedBox(height: 24),
