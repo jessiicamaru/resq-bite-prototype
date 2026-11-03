@@ -48,13 +48,13 @@ class _ConsumerMainNavScreenState extends State<ConsumerMainNavScreen> {
           backgroundColor: Colors.white,
           selectedItemColor: const Color(0xFF12543B),
           unselectedItemColor: const Color(0xFF718076),
-          selectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w700),
-          unselectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w500),
+          selectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 10, fontWeight: FontWeight.w700),
+          unselectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 10, fontWeight: FontWeight.w500),
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined, size: 22),
-              activeIcon: Icon(Icons.explore_rounded, size: 22),
+              icon: Icon(Icons.home_outlined, size: 22),
+              activeIcon: Icon(Icons.home_rounded, size: 22),
               label: 'Khám phá',
             ),
             BottomNavigationBarItem(
@@ -63,8 +63,8 @@ class _ConsumerMainNavScreenState extends State<ConsumerMainNavScreen> {
               label: 'Bản đồ',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined, size: 22),
-              activeIcon: Icon(Icons.receipt_long_rounded, size: 22),
+              icon: Icon(Icons.shopping_bag_outlined, size: 22),
+              activeIcon: Icon(Icons.shopping_bag_rounded, size: 22),
               label: 'Đơn hàng',
             ),
             BottomNavigationBarItem(

@@ -219,9 +219,6 @@ class ConsumerProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Bottom Navigation Bar
-            _buildBottomNav(context),
           ],
         ),
       ),
@@ -279,56 +276,6 @@ class ConsumerProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNav(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _navItem(context, 0, Icons.home_outlined, 'Khám phá', false, () {
-            Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
-          }),
-          _navItem(context, 1, Icons.map_outlined, 'Bản đồ', false, () {
-            Navigator.pushNamed(context, '/map-explorer');
-          }),
-          _navItem(context, 2, Icons.shopping_bag_outlined, 'Đơn hàng', false, () {
-            Navigator.pushNamed(context, '/orders-history');
-          }),
-          _navItem(context, 3, Icons.person, 'Tài khoản', true, () {}),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(BuildContext context, int index, IconData icon, String label, bool isSelected, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
-            size: 22,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: GoogleFonts.beVietnamPro(
-              fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
-            ),
-          ),
-        ],
       ),
     );
   }

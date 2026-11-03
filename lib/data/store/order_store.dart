@@ -26,23 +26,8 @@ class OrderStore extends ChangeNotifier {
   void _initData() {
     bags = mockMysteryBags.map((b) => b.copyWith()).toList();
     draftBag = bags.isNotEmpty ? bags.first : mockMysteryBags.first;
-
-    // Initial seed order matching Figma prototype #RB-1024
-    final initialBag = bags.first;
-    final seedOrder = ConsumerOrder(
-      orderCode: 'RB-1024',
-      bag: initialBag,
-      quantity: 1,
-      paymentMethod: 'MoMo',
-      orderTime: DateTime.now(),
-      pickupWindow: initialBag.pickupWindow,
-      notes: 'Không cần dụng cụ ăn uống',
-      bringOwnBag: true,
-      isDelivery: false,
-      status: OrderStatus.paid,
-    );
-    orders.add(seedOrder);
-    activeOrder = seedOrder;
+    orders.clear();
+    activeOrder = null;
   }
 
   void setDraftBag(MysteryBag bag) {

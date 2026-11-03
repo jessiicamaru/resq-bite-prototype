@@ -19,7 +19,6 @@ import 'features/catalog/screen_catalog_screen.dart';
 import 'features/consumer/category/presentation/category_detail_screen.dart';
 import 'features/consumer/home/presentation/search_results_screen.dart';
 import 'features/consumer/impact/presentation/green_impact_screen.dart';
-import 'features/consumer/map/presentation/map_explorer_screen.dart';
 import 'features/consumer/mystery_bag/presentation/mystery_bag_detail_screen.dart';
 import 'features/consumer/mystery_bag/presentation/sold_out_bag_screen.dart';
 import 'features/consumer/navigation/consumer_main_nav_screen.dart';
@@ -32,12 +31,10 @@ import 'features/consumer/orders/presentation/order_notes_screen.dart';
 import 'features/consumer/orders/presentation/order_qr_pickup_screen.dart';
 import 'features/consumer/orders/presentation/order_receipt_screen.dart';
 import 'features/consumer/orders/presentation/order_review_screen.dart';
-import 'features/consumer/orders/presentation/orders_history_screen.dart';
 import 'features/consumer/orders/presentation/payment_failed_screen.dart';
 import 'features/consumer/orders/presentation/payment_methods_screen.dart';
 import 'features/consumer/orders/presentation/payment_pending_screen.dart';
 import 'features/consumer/orders/presentation/payment_success_screen.dart';
-import 'features/consumer/profile/presentation/consumer_profile_screen.dart';
 import 'features/consumer/profile/presentation/green_collection_screen.dart';
 import 'features/consumer/profile/presentation/help_center_screen.dart';
 import 'features/consumer/profile/presentation/notifications_screen.dart';
@@ -104,7 +101,7 @@ class ResQBitesApp extends StatelessWidget {
           case '/home':
             return MaterialPageRoute(builder: (_) => const ConsumerMainNavScreen(initialIndex: 0));
           case '/map-explorer':
-            return MaterialPageRoute(builder: (_) => const MapExplorerScreen());
+            return MaterialPageRoute(builder: (_) => const ConsumerMainNavScreen(initialIndex: 1));
           case '/search-results':
             final q = (settings.arguments as String?) ?? 'bánh';
             return MaterialPageRoute(builder: (_) => SearchResultsScreen(initialQuery: q));
@@ -206,7 +203,7 @@ class ResQBitesApp extends StatelessWidget {
             final code = (args?['orderCode'] as String?) ?? 'RB-1024';
             return MaterialPageRoute(builder: (_) => OrderReceiptScreen(bag: bag, quantity: qty, orderCode: code));
           case '/orders-history':
-            return MaterialPageRoute(builder: (_) => const OrdersHistoryScreen());
+            return MaterialPageRoute(builder: (_) => const ConsumerMainNavScreen(initialIndex: 2));
           case '/cancel-order':
             final args = settings.arguments as Map<String, dynamic>?;
             final bag = (args?['bag'] as MysteryBag?) ?? mockMysteryBags.first;
@@ -226,7 +223,7 @@ class ResQBitesApp extends StatelessWidget {
           case '/green-collection':
             return MaterialPageRoute(builder: (_) => const GreenCollectionScreen());
           case '/consumer-profile':
-            return MaterialPageRoute(builder: (_) => const ConsumerProfileScreen());
+            return MaterialPageRoute(builder: (_) => const ConsumerMainNavScreen(initialIndex: 3));
           case '/personal-info':
             return MaterialPageRoute(builder: (_) => const PersonalInfoScreen());
           case '/notifications':

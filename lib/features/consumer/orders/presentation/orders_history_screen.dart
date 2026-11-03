@@ -25,22 +25,25 @@ class OrdersHistoryScreen extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: AppColors.background,
               elevation: 0,
-              leading: Container(
-                margin: const EdgeInsets.only(left: 16),
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE4E9E1)),
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.arrow_back_ios_new, size: 16),
-                  color: const Color(0xFF183B2E),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
+              automaticallyImplyLeading: false,
+              leading: Navigator.canPop(context)
+                  ? Container(
+                      margin: const EdgeInsets.only(left: 16),
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFFE4E9E1)),
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+                        color: const Color(0xFF183B2E),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    )
+                  : null,
               title: Text(
                 'Quản Lý Đơn Hàng',
                 style: GoogleFonts.beVietnamPro(
@@ -64,22 +67,12 @@ class OrdersHistoryScreen extends StatelessWidget {
                 ],
               ),
             ),
-            body: SafeArea(
-              bottom: false,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        _buildOrdersList(context, activeOrders, isActionable: true),
-                        _buildCompletedList(context, completedOrders),
-                        _buildCancelledList(context, cancelledOrders),
-                      ],
-                    ),
-                  ),
-                  _buildBottomNav(context),
-                ],
-              ),
+            body: TabBarView(
+              children: [
+                _buildOrdersList(context, activeOrders, isActionable: true),
+                _buildCompletedList(context, completedOrders),
+                _buildCancelledList(context, cancelledOrders),
+              ],
             ),
           ),
         );
@@ -90,9 +83,65 @@ class OrdersHistoryScreen extends StatelessWidget {
   Widget _buildOrdersList(BuildContext context, List<ConsumerOrder> orders, {required bool isActionable}) {
     if (orders.isEmpty) {
       return Center(
-        child: Text(
-          'Chưa có đơn hàng nào chờ lấy.',
-          style: GoogleFonts.beVietnamPro(fontSize: 13, color: const Color(0xFF718076)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEBF2EB),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.shopping_bag_outlined,
+                  size: 36,
+                  color: Color(0xFF12543B),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Chưa có đơn hàng nào chờ lấy',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF183B2E),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Hãy khám phá và giải cứu các món ăn ngon để bắt đầu!',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.beVietnamPro(
+                  fontSize: 13,
+                  color: const Color(0xFF718076),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF12543B),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
+                },
+                child: Text(
+                  'Khám phá ngay',
+                  style: GoogleFonts.beVietnamPro(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -305,6 +354,39 @@ class OrdersHistoryScreen extends StatelessWidget {
   }
 
   Widget _buildCompletedList(BuildContext context, List<ConsumerOrder> orders) {
+    if (orders.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 64,
+                height: 64,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEBF2EB),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.check_circle_outline, size: 32, color: Color(0xFF12543B)),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'Chưa có đơn hàng đã nhận',
+                style: GoogleFonts.beVietnamPro(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xFF183B2E)),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Các đơn hàng bạn đã nhận thành công sẽ xuất hiện tại đây.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.beVietnamPro(fontSize: 12, color: const Color(0xFF718076)),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final currencyFormat = NumberFormat('#,###', 'vi_VN');
 
     return ListView(
@@ -414,9 +496,33 @@ class OrdersHistoryScreen extends StatelessWidget {
   Widget _buildCancelledList(BuildContext context, List<ConsumerOrder> orders) {
     if (orders.isEmpty) {
       return Center(
-        child: Text(
-          'Chưa có đơn hàng nào bị hủy.',
-          style: GoogleFonts.beVietnamPro(fontSize: 13, color: const Color(0xFF718076)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 64,
+                height: 64,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFEEBE4),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.cancel_outlined, size: 32, color: Color(0xFFC13A23)),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'Chưa có đơn hàng nào bị hủy',
+                style: GoogleFonts.beVietnamPro(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xFF183B2E)),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Các đơn hàng yêu cầu hủy sẽ được quản lý tại đây.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.beVietnamPro(fontSize: 12, color: const Color(0xFF718076)),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -502,56 +608,6 @@ class OrdersHistoryScreen extends StatelessWidget {
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildBottomNav(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFE4E9E1))),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _navItem(context, 0, Icons.home_outlined, 'Khám phá', false, () {
-            Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
-          }),
-          _navItem(context, 1, Icons.map_outlined, 'Bản đồ', false, () {
-            Navigator.pushNamed(context, '/map-explorer');
-          }),
-          _navItem(context, 2, Icons.shopping_bag, 'Đơn hàng', true, () {}),
-          _navItem(context, 3, Icons.person_outline, 'Tài khoản', false, () {
-            Navigator.pushNamed(context, '/consumer-profile');
-          }),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(BuildContext context, int index, IconData icon, String label, bool isSelected, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
-            size: 22,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: GoogleFonts.beVietnamPro(
-              fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
