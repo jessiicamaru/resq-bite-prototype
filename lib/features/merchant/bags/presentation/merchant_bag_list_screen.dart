@@ -9,8 +9,8 @@ class MerchantBagListScreen extends StatefulWidget {
   State<MerchantBagListScreen> createState() => _MerchantBagListScreenState();
 }
 
-class _MerchantBagListScreenState extends State<MerchantBagListScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _MerchantBagListScreenState extends State<MerchantBagListScreen> {
+  int _selectedTab = 0; // 0: Đang bán, 1: Bản nháp, 2: Tạm dừng
 
   final List<Map<String, dynamic>> _bags = [
     {
@@ -37,46 +37,33 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final canPop = Navigator.canPop(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 16),
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFE4E9E1)),
-          ),
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
-            color: const Color(0xFF183B2E),
-            onPressed: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                Navigator.pushReplacementNamed(context, '/merchant-home');
-              }
-            },
-          ),
-        ),
+        automaticallyImplyLeading: false,
+        leading: canPop
+            ? Container(
+                margin: const EdgeInsets.only(left: 16),
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+                  color: const Color(0xFF183B2E),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         title: Text(
           'Túi đang mở bán',
           style: GoogleFonts.beVietnamPro(
@@ -86,6 +73,23 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
           ),
         ),
         centerTitle: false,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFE4E9E1)),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: const Icon(Icons.add_rounded, size: 20, color: Color(0xFF183B2E)),
+              onPressed: () => Navigator.pushNamed(context, '/merchant-create-bag'),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -98,11 +102,11 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
                 style: GoogleFonts.beVietnamPro(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF12543B),
-                  letterSpacing: 1.0,
+                  color: const Color(0xFF63834D),
+                  letterSpacing: 0.8,
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
                 'Túi đang mở bán',
                 style: GoogleFonts.beVietnamPro(
@@ -121,28 +125,19 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
               ),
               const SizedBox(height: 16),
 
-              // Filter Tabs: Đang bán | Bản nháp | Tạm dừng
+              // Filter Tabs: Đang bán | Bản nháp | Tạm dừng (Figma M13)
               Container(
-                height: 40,
+                height: 41,
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color(0xFFEAF0E3),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFE4E9E1)),
                 ),
-                child: TabBar(
-                  controller: _tabController,
-                  indicator: BoxDecoration(
-                    color: const Color(0xFF12543B),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: const Color(0xFF718076),
-                  labelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w700),
-                  unselectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w500),
-                  tabs: const [
-                    Tab(text: 'Đang bán'),
-                    Tab(text: 'Bản nháp'),
-                    Tab(text: 'Tạm dừng'),
+                child: Row(
+                  children: [
+                    _buildTabItem('Đang bán', 0),
+                    _buildTabItem('Bản nháp', 1),
+                    _buildTabItem('Tạm dừng', 2),
                   ],
                 ),
               ),
@@ -152,6 +147,12 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
               // Bags list matching Figma M13
               ...List.generate(_bags.length, (index) {
                 final bag = _bags[index];
+                final isSelling = (bag['isSelling'] as bool?) ?? true;
+
+                // Tab filter: if tab 2 is selected (Tạm dừng), show only paused, etc.
+                if (_selectedTab == 0 && !isSelling) return const SizedBox.shrink();
+                if (_selectedTab == 2 && isSelling) return const SizedBox.shrink();
+
                 return Container(
                   margin: const EdgeInsets.only(bottom: 14),
                   padding: const EdgeInsets.all(16),
@@ -173,6 +174,13 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                width: 60,
+                                height: 60,
+                                color: const Color(0xFFEAF3DD),
+                                alignment: Alignment.center,
+                                child: const Icon(Icons.bakery_dining_rounded, color: Color(0xFF12543B), size: 24),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -196,15 +204,15 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFEAF3DD),
+                                        color: isSelling ? const Color(0xFFEAF3DD) : const Color(0xFFF3EFEA),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Text(
-                                        'Đang bán',
+                                        isSelling ? 'Đang bán' : 'Tạm dừng',
                                         style: GoogleFonts.beVietnamPro(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
-                                          color: const Color(0xFF12543B),
+                                          color: isSelling ? const Color(0xFF12543B) : const Color(0xFF8F4C17),
                                         ),
                                       ),
                                     ),
@@ -249,9 +257,7 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Chỉnh sửa số lượng túi: ${bag['title']}')),
-                                  );
+                                  _showEditQuantityDialog(context, bag);
                                 },
                                 child: Text(
                                   'Sửa số lượng',
@@ -266,15 +272,25 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    bag['isSelling'] = !bag['isSelling'];
+                                    bag['isSelling'] = !isSelling;
                                   });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        !isSelling
+                                            ? 'Đã mở bán lại: ${bag['title']}'
+                                            : 'Đã tạm dừng: ${bag['title']}',
+                                      ),
+                                      duration: const Duration(seconds: 1),
+                                    ),
+                                  );
                                 },
                                 child: Text(
-                                  'Tạm dừng',
+                                  isSelling ? 'Tạm dừng' : 'Mở bán',
                                   style: GoogleFonts.beVietnamPro(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF8F4C17),
+                                    color: isSelling ? const Color(0xFF8F4C17) : const Color(0xFF12543B),
                                   ),
                                 ),
                               ),
@@ -314,6 +330,111 @@ class _MerchantBagListScreenState extends State<MerchantBagListScreen> with Sing
               const SizedBox(height: 20),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabItem(String label, int index) {
+    final isSelected = _selectedTab == index;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _selectedTab = index),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(9),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Text(
+            label,
+            style: GoogleFonts.beVietnamPro(
+              fontSize: 11,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showEditQuantityDialog(BuildContext context, Map<String, dynamic> bag) {
+    int current = (bag['remaining'] as int?) ?? 1;
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          title: Text(
+            'Sửa số lượng túi tồn kho',
+            style: GoogleFonts.beVietnamPro(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xFF183B2E)),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                bag['title'] as String,
+                style: GoogleFonts.beVietnamPro(fontSize: 13, color: const Color(0xFF718076)),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle_outline, color: Color(0xFF12543B), size: 30),
+                    onPressed: () {
+                      if (current > 0) {
+                        setDialogState(() => current--);
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 16),
+                  Text(
+                    '$current',
+                    style: GoogleFonts.beVietnamPro(fontSize: 22, fontWeight: FontWeight.w700, color: const Color(0xFF183B2E)),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle_outline, color: Color(0xFF12543B), size: 30),
+                    onPressed: () {
+                      setDialogState(() => current++);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text('Hủy', style: GoogleFonts.beVietnamPro(color: const Color(0xFF718076))),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF12543B),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () {
+                setState(() {
+                  bag['remaining'] = current;
+                });
+                Navigator.pop(ctx);
+              },
+              child: Text('Lưu', style: GoogleFonts.beVietnamPro(fontWeight: FontWeight.w700, color: Colors.white)),
+            ),
+          ],
         ),
       ),
     );

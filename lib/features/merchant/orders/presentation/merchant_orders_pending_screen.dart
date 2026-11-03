@@ -10,8 +10,8 @@ class MerchantOrdersPendingScreen extends StatefulWidget {
   State<MerchantOrdersPendingScreen> createState() => _MerchantOrdersPendingScreenState();
 }
 
-class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScreen> {
+  late int _selectedTab;
 
   final List<Map<String, dynamic>> _orders = [
     {
@@ -47,44 +47,37 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialTab);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    _selectedTab = widget.initialTab;
   }
 
   @override
   Widget build(BuildContext context) {
+    final canPop = Navigator.canPop(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 16),
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFE4E9E1)),
-          ),
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.arrow_back_ios_new, size: 16),
-            color: const Color(0xFF183B2E),
-            onPressed: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                Navigator.pushReplacementNamed(context, '/merchant-home');
-              }
-            },
-          ),
-        ),
+        automaticallyImplyLeading: false,
+        leading: canPop
+            ? Container(
+                margin: const EdgeInsets.only(left: 16),
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFE4E9E1)),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.arrow_back_ios_new, size: 16),
+                  color: const Color(0xFF183B2E),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         title: Text(
           'Đơn chờ nhận',
           style: GoogleFonts.beVietnamPro(
@@ -132,11 +125,11 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
                       style: GoogleFonts.beVietnamPro(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF12543B),
-                        letterSpacing: 1.0,
+                        color: const Color(0xFF63834D),
+                        letterSpacing: 0.8,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Text(
                       'Đơn chờ nhận',
                       style: GoogleFonts.beVietnamPro(
@@ -155,28 +148,19 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
                     ),
                     const SizedBox(height: 16),
 
-                    // 3 Tabs: Chờ nhận | Đã nhận | Đã hủy
+                    // 3 Tabs: Chờ nhận | Đã nhận | Đã hủy (Figma M23)
                     Container(
-                      height: 40,
+                      height: 41,
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: const Color(0xFFEAF0E3),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE4E9E1)),
                       ),
-                      child: TabBar(
-                        controller: _tabController,
-                        indicator: BoxDecoration(
-                          color: const Color(0xFF12543B),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        labelColor: Colors.white,
-                        unselectedLabelColor: const Color(0xFF718076),
-                        labelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w700),
-                        unselectedLabelStyle: GoogleFonts.beVietnamPro(fontSize: 11, fontWeight: FontWeight.w500),
-                        tabs: const [
-                          Tab(text: 'Chờ nhận'),
-                          Tab(text: 'Đã nhận'),
-                          Tab(text: 'Đã hủy'),
+                      child: Row(
+                        children: [
+                          _buildTabItem('Chờ nhận', 0),
+                          _buildTabItem('Đã nhận', 1),
+                          _buildTabItem('Đã hủy', 2),
                         ],
                       ),
                     ),
@@ -194,7 +178,7 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
                         children: [
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Icon(Icons.search_rounded, color: Color(0xFF718076), size: 18),
+                            child: Icon(Icons.search, size: 18, color: Color(0xFF718076)),
                           ),
                           Expanded(
                             child: TextField(
@@ -348,6 +332,40 @@ class _MerchantOrdersPendingScreenState extends State<MerchantOrdersPendingScree
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabItem(String label, int index) {
+    final isSelected = _selectedTab == index;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _selectedTab = index),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(9),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Text(
+            label,
+            style: GoogleFonts.beVietnamPro(
+              fontSize: 11,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              color: isSelected ? const Color(0xFF12543B) : const Color(0xFF718076),
+            ),
+          ),
         ),
       ),
     );
