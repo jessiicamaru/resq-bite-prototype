@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+UX_UI - 5 Musketeers.fig
+UX_UI - 5 Musketeers.png
+assets/screens/
